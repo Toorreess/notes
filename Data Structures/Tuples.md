@@ -40,17 +40,4 @@ snd (1, True)
 	True
 ```
 
-### Precedence levels
-| Level |  Predefined Operators  |                    |
-|:-----:|:----------------------:|:------------------:|
-|  10   | Functions Applications | Highest precedence |
-|   9   |          . !!          |                    |
-|   8   |        ^ ^^ **         |                    |
-|   7   |          * /           |                    |
-|   6   |          + -           |                    |
-|   5   |          : ++          |                    |
-|   4   |    == /= < <= > >=     |                    |
-|   3   |           &&           |                    |
-|   2   |          \|\|          |                    |
-|   1   |       >> >>= =<<       |                    |
-|   0   |          $ $!          | Lowest precedence  | 
+
