@@ -176,3 +176,6 @@ equals3 (x,y,z)
     | x==y && y==z   = True
     | otherwise      = False
 
+{-
+7.  
+-}
