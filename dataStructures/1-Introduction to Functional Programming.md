@@ -1,3 +1,4 @@
+# U1-Introduction to Functional Programming
 Based on computing with mathematical (or pure) functions:
 1. Takes some data (*Arguments*)
 2. Does some calculation with data (*Expression*)
@@ -23,15 +24,16 @@ This property is called ***Referential Transparency***: same expression always d
 - Lazy evaluation.
 - Case sensitive.
 - Curried notation.
+
 ## Identifiers
 #### Functions & argument:
 - Must start in lowercase letter.
 - Followed by letters, digits, apostrophe and underline.
 
-### Type:
+#### Type:
 - Must start with uppercase letter.
 
-### Operator:
+#### Operator:
 - Sequence of one or more symbols.
 - First cannot be a colon.
 
@@ -142,16 +144,16 @@ We usually have to consider different cases when defining a function:
 ```Haskell
 sign :: (Eq a, Ord a, Num a) => a -> a
 sign x  | x > 0  = 1
-		| x < 0  = -1
-		| x == 0 = 0
+	| x < 0  = -1
+	| x == 0 = 0
 ```
 
 This function can also be defined as (***Preferred style***):
 ```Haskell
 sign :: (Eq a, Ord a, Num a) => a -> a
 sign x  | x > 0  = 1
-		| x < 0  = -1
-		| otherwise = 0
+	| x < 0  = -1
+	| otherwise = 0
 ```
 
 ## Conditional Expressions
@@ -167,7 +169,7 @@ Functions that are undefined for some arguments. Applying function to those argu
 ```Haskell
 reciprocal :: (Eq a, Num a, Fractional a) => a -> a
 reciprocal x | x == 0 = error "reciprocal undefined"
-			 | otherwise = 1/x
+	     | otherwise = 1/x
 ```
 
 
@@ -187,9 +189,9 @@ circlePerimeter r = 2*pi*r
 cylinderArea :: Double -> Double -> Double
 cylinderArea r h = 2*circ + rect
 	where                     -- Must be indented with respect to function definition
-		circ = circleArea r
-		l    = circPerimeter r
-		rect = rectArea l h
+	    circ = circleArea r
+	    l    = circPerimeter r
+	    rect = rectArea l h
 ```
 
 
@@ -247,9 +249,9 @@ circLength r = 2*pi*r
 cylinderArea :: Double -> Double -> Double
 cylinderArea r h =
 	let
-		circ = circArea r
-		l    = circLength r
-		rect = rectArea l h
+	    circ = circArea r
+	    l    = circLength r
+	    rect = rectArea l h
 	in
-		2*circ + rect
+	    2*circ + rect
 ```

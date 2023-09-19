@@ -1,3 +1,4 @@
+# Tuples
 **Heterogeneous** data structure
 - Collection of values, called **_components_**.
 - Each component may have a different type → **POLYMORPHIC**.
