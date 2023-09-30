@@ -1,0 +1,165 @@
+---
+title: "Brute-Force Matrix Multiplication"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: false
+    extra_dependencies: ["placeins", "subfig"]
+papersize: a4
+fontsize: 11pt
+geometry:
+  - top=1in
+  - bottom=1in
+  - left=1.5in
+  - right=1.5in
+params:
+  algorithm: "BruteForce"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Objectives
+
+Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+
+# Experimental Setup
+
+Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+
+\begin{table}[!h]
+\caption{Computational environment considered.}
+\begin{tabular}{lp{0.8\linewidth}}
+\hline
+CPU       & Write here your Processor specs, RAM \\
+OS        & Write here your Operating system name and version\\
+Java      & Write here your Java version\\
+\hline
+\end{tabular}
+\label{tab:conf}
+\end{table}
+
+
+# Empirical Results
+
+A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix, along with the statistical fitting of the data to different growth models. 
+
+Describe the results, in particular Figure \@ref(fig:time).
+
+
+```{r load-data}
+read_matrixmult_stats <- function  (filename) {
+  
+  rawdata = read.table(filename)
+  
+  dataframe <- data.frame(
+    "size" = rawdata[,1],
+    "time" = apply(t(rawdata)[-1,], 2, mean),
+    "se"  = apply(t(rawdata)[-1,], 2, sd) / sqrt(dim(rawdata)[2]-1)
+  ) 
+  
+  n <- dim(rawdata)[1];
+  b0 <- log(dataframe$time[n]/dataframe$time[n-1])/log(dataframe$size[n]/dataframe$size[n-1])
+  a0 <- dataframe$time[n]/(dataframe$size[n]^b0)
+  datafit <- nls(time ~ a * size^b, data=dataframe, start = list(a = a0, b = b0))
+  fitfun <- function(x) predict(datafit, newdata=data.frame(size=x))
+  xx <- seq(min(dataframe$size), max(dataframe$size))
+  data_projection <- data.frame(
+      "size" = xx,
+      "time" = fitfun(xx)
+    )
+  datalist <-list(data = dataframe, fit = datafit, f = fitfun, dataproj = data_projection)
+
+}  
+
+brute <- read_matrixmult_stats(paste(params$algorithm, ".txt", sep=""))
+
+```
+
+
+```{r time, fig.cap="Time required for multiplying matrices of increasing size", fig.align = "center"}
+# Graphical representation
+
+library(ggplot2)
+library(scales)
+col = c("data" = "blue", "fit" = "red")
+figure <- ggplot(data=brute$data, aes(x=size, y=time)) + 
+  geom_errorbar(aes(ymin=time-se, ymax=time+se, color="data"), width=.2) +
+  geom_point(shape=21, size=3, aes(colour="data"), fill="white") +
+  geom_line(data=brute$dataproj, aes(colour = "fit")) + 
+  scale_colour_manual(name = "", values = col, 
+                        labels = c("data", 
+                                   bquote(                                     .(format(summary(brute$fit)$coefficients[1], scientific=TRUE, digits = 3)) ~ "·" ~ .(format(summary(brute$fit)$coefficients[2], scientific=FALSE, digits = 3))^n
+                                     )
+                                  )
+    ) + 
+  guides(color = guide_legend(override.aes = list(shape = c(1, NA), 
+                                                    linetype = c("blank",
+                                                                 "solid"),
+                                                    colour = c("blue", "red")
+    ) 
+    )
+    ) +
+    theme_bw() + 
+    theme(aspect.ratio=1) + 
+    theme(legend.justification = c(0, 1), 
+          legend.position = c(0.05, 1.05), 
+          legend.box.margin=margin(c(5,5,5,5)),
+          legend.background = element_rect(fill='transparent')) + 
+  ylab("time (s)") 
+
+  show(figure)
+
+```
+
+
+
+# Discussion
+
+Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+
+\FloatBarrier
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+
+# Appendix
+
+## Data Summary 
+
+```{r data-summary, results = "asis"}
+library(knitr)
+library(kableExtra)
+alg <- params$algorithm
+dataframe <- brute$data
+table_dataframe <- data.frame(
+    "size" = dataframe$size,
+    "mean" = format(dataframe$time, scientific=TRUE, digits = 3),
+    "se" = format(dataframe$se, scientific=TRUE, digits = 3)
+  )
+cat(kable(table_dataframe, format = "latex",
+      col.names = c("size", "time (mean)", "time (se)"), 
+      caption = paste(sprintf("\\label{tab:%s} ", alg), 
+                      "Summary of the experimental results for ", alg, ".",
+                      sep="")) %>%
+  kable_styling(latex_options = c("striped", "HOLD_position")) %>%
+  row_spec(0,bold=TRUE) 
+  )
+
+
+```
+
+
+
+## Model Fitting 
+
+```{r model-summary}
+  show(brute$fit)
+```
+
+  
+
+
