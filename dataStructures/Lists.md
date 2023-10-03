@@ -161,9 +161,32 @@ Main> filter isDigit "p0ep1e"
 "01"
 ```
 
-### Folding Lists
+## Folding Lists
 
-### Lambda Functions
+- `foldr`: operates all elements in a list by using a binary function and an initial value. `foldr` stands for *fold right*. Elements in the list are operated in right to left order.
+##### Example
+```Haskell 
+foldr add 0 [1,2,3,4]
+=> 1 `add` ( 2 `add` ( 3 `add` ( 4 `add` 0 )))
+=> 1 `add` ( 2 `add` ( 3 `add` 4 ))
+=> 1 `add` ( 2 `add` 7 )
+=> 1 `add` 9
+=> 10
+```
+
+
+- `foldl`: operates all elements in a list by using a binary function and an initial value. `foldl` stands for *fold left*. Elements in the list are operated in left to right order.
+##### Example
+```Haskell 
+foldl add 0 [1,2,3,4]
+=> ((( 0 `add` 1 ) `add` 2 ) `add` 3 ) `add` 4
+=> (( 1 `add` 2 ) `add` 3 ) `add` 4
+=> ( 3 `add` 3 ) `add` 4
+=> 6 `add` 4
+=> 10
+```
+
+## Lambda Functions
 We can pass a function as argument without even naming it. This is called an **anonymous function** or a **λ-function**
 ```Haskell
 Main> map (\x -> x*x) [1,2,3]
@@ -174,4 +197,71 @@ Main> filter (\x -> mod x 2 == 0) [1,2,3,4]
 [2,4]
 Main> filter (\x -> x > 2) [10,2,3,1]
 [10,3]
+```
+
+## Sections
+A single argument can be applied to a binary operator. As a result, we obtain a one argument function that takes the missed argument and returns the operator result. This is called **sectioning** an operator.
+
+```Haskell 
+Main> map (2*) [1,2,3]          -- (2*) is a shorthand for (\x -> 2*x)
+Main> map (^3) [1,2,3,4]        -- (^3) is a shorthand for (\x -> x^3)
+Main> filter (<3) [10, 2, 3, 1] -- (<3) is a shorthand for (\x -> x<3)
+```
+
+## Arithmetic Sequences
+A list where the difference between any two successive elements is a constant.
+
+```Haskell 
+Prelude> [1..10]
+[1,2,3,4,5,6,7,8,9,10]
+Prelude> [2,4..10] 
+[2,4,6,8,10]
+Prelude> [10,9..1] 
+[10,9,8,7,6,5,4,3,2,1]
+Prelude> [1,3..]
+[1,3,5,7,9,11,13,15...
+```
+
+## List Comprehensions
+Syntax for processing lists. **Generators** are used to iterate through elements in a list:
+$$[expression | pattern \leftarrow list]$$
+```Haskell 
+Prelude> [ x^2 | x <- [1..4] ] 
+[1,4,9,16]
+Prelude> [ even x | x <- [1..4] ] 
+[False,True,False,True]
+Prelude> [ (x,even x) | x <- [1..4] ]
+[(1,False),(2,True),(3,False),(4,True)]
+```
+
+
+- *Guards* are used to select elements:
+$$[ expression | pattern <- list, guard ] \textit{Guard must be a boolean expression}$$
+```Haskell 
+Prelude> [ x | x <- [-1,2,3,-4], x>0 ] 
+[2,3]
+Prelude> [ x | x <- [1,2,3,4], even x ] 
+[2,4]
+Prelude> [ x^2 | x <- [1,2,3,4], even x ] 
+[4,16]
+```
+
+
+- *Local definitions* can be used to define local variables:
+$$[ expression_1 | pattern_1 <- list, let pattern_2 = expression_2 ]$$
+```Haskell 
+Prelude> [ (x,y) | x <- [1,2,3], let y = 2*x ] 
+[(1,2), (2,4), (3,6)]
+Prelude> [ (x,2*x) | x <- [1,2,3] ] 
+[(1,2), (2,4), (3,6)]
+```
+
+
+- *Multiple generators* can be used to iterate multiple lists:
+$$[ expression | pattern_1 <- list_1, pattern_2 <- list_2, ... ]$$
+```Haskell
+Prelude> [ (x,y) | x <- [1,2,3], y <- [10,20] ] 
+[(1,10), (1,20), (2,10), (2,20), (3,10), (3,20)]
+Prelude> [ (x,y) | x <- [1,2,3], y <- [10,20], even (x+y) ] 
+[(2,10), (2,20)]
 ```
