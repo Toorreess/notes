@@ -11,8 +11,12 @@
             "id": "8d4e43f3c6280b41",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "dataStructures/Tuples.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "dataStructures/Tuples.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "dataStructures/Tuples.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "dataStructures/Tuples.md"
+              }
             }
           },
           {
@@ -148,10 +156,12 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "9b6a2d8ff362e93c",
+  "active": "8d4e43f3c6280b41",
   "lastOpenFiles": [
-    "computerStructure/2-Enhancing Performance with Pipelining.md",
     "computerStructure/1-Measuring & Understanding Performance.md",
+    "dataStructures/Tuples.md",
+    "dataStructures/1-Introduction to Functional Programming.md",
+    "computerStructure/2-Enhancing Performance with Pipelining.md",
     "computerStructure",
     "ada/Lab1/lab1_pythagoreanTriples/src/NaivePythagoreanTripleFinder.java",
     "ada/Lab1/lab1_pythagoreanTriples/src/mainnn.java",
@@ -167,7 +177,6 @@
     "ada/Lab1/lab1_pythagoreanTriples/doc/legal/jqueryUI.md",
     "ada/Lab1/lab1_pythagoreanTriples/doc/legal/jquery.md",
     "ada/Lab1/lab1_pythagoreanTriples/doc/copy.svg",
-    "dataStructures/1-Introduction to Functional Programming.md",
     "ada/1. Complexity & Sorting.md",
     "Data Structures/Tuples.md",
     "Data Structures/1-Introduction to Functional Programming.md"
