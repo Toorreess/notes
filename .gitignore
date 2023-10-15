@@ -1,9 +1,3 @@
-# to exclude Obsidian's settings (including plugin and hotkey configurations)
-.obsidian/
-
-# Excluding dataStructure excercises directory
-.dataStructure/excercises
-
 # Add below lines to exclude OS settings and caches
 .trash/
 .DS_Store
