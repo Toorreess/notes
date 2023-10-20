@@ -21,25 +21,23 @@ public class MergeSort extends SortingAlgorithm {
 	@Override
 	protected <E extends Comparable<? super E>> void _sort(List<E> A, int l, int r) {
 
-		if (A.size() < 2)
-			return;
-		
-		int mid = A.size()/2;
-		
-		List<E> B = new ArrayList<E>();
-		for (int i = 0; i < mid; i++) {
-			B.add(i, A.get(i));
-		}
+		if (l < r) {
 
-		List<E> C = new ArrayList<E>();
-		for (int i = mid; i < A.size(); i++) {
-			C.add(i-mid, A.get(i));
-		}
-		_sort(B, 0, B.size()-1);
-		_sort(C, 0, C.size()-1);
-		merge(A, B, C, l);
-		
+			int mid = A.size() / 2;
 
+			List<E> B = new ArrayList<E>();
+			for (int i = 0; i < mid; i++) {
+				B.add(i, A.get(i));
+			}
+
+			List<E> C = new ArrayList<E>();
+			for (int i = mid; i < A.size(); i++) {
+				C.add(i - mid, A.get(i));
+			}
+			_sort(B, 0, B.size() - 1);
+			_sort(C, 0, C.size() - 1);
+			merge(A, B, C, l);
+		}
 	}
 
 	/**
@@ -52,28 +50,29 @@ public class MergeSort extends SortingAlgorithm {
 	 * @param l   first index in A where the merged elements will be placed
 	 */
 	private <E extends Comparable<? super E>> void merge(List<E> A, List<E> B, List<E> C, int l) {
-		int i = 1, j = 1, k = 1;
+		// Initial indexes of B and C
+		int i = 0, j = 0;
 		
-		while(j<B.size() && k<C.size()) {
-			if(C.get(k).compareTo(B.get(j))==1) {
-				A.add(i, B.get(j));
-				j++;
+		while (i < B.size() && j < C.size()) {
+			if (B.get(i).compareTo(C.get(j)) <= 0) {
+				A.set(l, B.get(i));
+				i++;
 			} else {
-				A.add(i, C.get(k));
-				k++;
-			}
-			i++;
-		}
-		if(j==B.size()) {
-			for(; i<A.size(); i++) {
-				A.set(i, C.get(k));
-				k++;
-			}
-		} else {
-			for(; i< A.size(); i++) {
-				A.set(i, B.get(j));
+				A.set(l, C.get(j));
 				j++;
 			}
+			l++;
+		}
+		
+		while(i < B.size()) {
+			A.set(l, B.get(i));
+			i++;
+			l++;
+		}
+		while(i < B.size()) {
+			A.set(l, C.get(j));
+			j++;
+			l++;
 		}
 	}
 
