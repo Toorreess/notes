@@ -1,0 +1,184 @@
+---
+title: "Divide-and-Conquer Sorting Algorithms"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: false
+    extra_dependencies: ["placeins"]
+papersize: a4
+fontsize: 11pt
+geometry:
+  - top=1in
+  - bottom=1in
+  - left=1.5in
+  - right=1.5in
+params:
+  algorithm: ["selection", "mergesort", "quicksort"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Objectives
+
+Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+
+# Experimental Setup
+
+Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+
+\begin{table}[!h]
+\caption{Computational environment considered.}
+\begin{tabular}{lp{0.8\linewidth}}
+\hline
+CPU       & Write here your Processor specs, RAM \\
+OS        & Write here your Operating system name and version\\
+Java      & Write here your Java version\\
+\hline
+\end{tabular}
+\label{tab:conf}
+\end{table}
+
+
+# Empirical Results
+
+A summary of the experimental results is provided in Tables \@ref(tab:mergesort)--\@ref(tab:quicksort) in the Appendix, along with the statistical fitting of the data to different growth models. 
+
+Describe the results, in particular those in Figure \@ref(fig:mergesort) and Figure \@ref(fig:quicksort).
+
+
+
+```{r}
+read_stats <- function  (filename) {
+  # Reading the data
+  rawdata = read.table(filename)
+  # Compute basic statistics 
+  stderr <- function(x) sd(x)/sqrt(length(x))
+  m <- dim(rawdata)[1];
+  n <- dim(rawdata)[2];
+  dataframe <- data.frame(
+    "size" = rawdata[,1],
+    "val" = apply(t(rawdata)[-1,], 2, mean),
+    "valerr" = apply(t(rawdata)[-1,], 2, stderr)
+  )
+  
+  # power-law fit
+  b0 <- log(dataframe$val[m]/dataframe$val[m-1])/log(dataframe$size[m]/dataframe$size[m-1])
+  a0 <- dataframe$val[m]/(dataframe$size[m]^b0)
+  datafit1 <- nls(val ~ a * size ^ b, data=dataframe, start = list(a = a0, b = b0))
+  fitfun1 <- function(x) predict(datafit1, newdata=data.frame(size=x))
+  # power-law fit
+  b0 <- log((dataframe$val[m]/log(dataframe$size[m]))/(dataframe$val[m-1]/log(dataframe$size[m-1])))/log(dataframe$size[m]/dataframe$size[m-1])
+  a0 <- dataframe$val[m]/(dataframe$size[m]^b0*log(dataframe$size[m]))
+  datafit2 <- nls(val ~ a * size ^ b * log(size), data=dataframe, start = list(a = a0, b = b0))
+  fitfun2 <- function(x) predict(datafit2, newdata=data.frame(size=x))  
+  xx <- seq(1, max(dataframe$size)*2, by = max(dataframe$size)/1000)
+  data_projection <- data.frame(
+    "size" = xx,
+    "val1" = fitfun1(xx),
+    "val2" = fitfun2(xx)
+  )
+  datalist <-list(data = dataframe, fit1 = datafit1, f1 = fitfun1, fit2 = datafit2, f2 = fitfun2, predict = data_projection)
+}
+
+
+algorithm_data <- list()
+for (alg in params$algorithm) {
+  data <- read_stats(paste(alg, ".txt", sep=""))
+  algorithm_data[[alg]] <- data
+  
+}
+```
+
+
+```{r tc, fig.cap=paste(sprintf("\\label{fig:%s} ", params$algorithm), "Time required for sorting lists of increasing size using ", params$algorithm, ".", sep=""), result="asis", message=FALSE, echo=FALSE, warning=FALSE}
+library(ggplot2)
+
+col <- c("data" = "blue", "fit1" = "red", "fit2" = "black")
+for (alg in params$algorithm) {
+  dataf <- algorithm_data[[alg]]
+  figure <- ggplot() + 
+    geom_line(data = dataf$predict, aes(x=size, y=val1, colour = "fit1")) +
+    geom_line(data = dataf$predict, aes(x=size, y=val2, colour = "fit2")) +
+    geom_point(data = dataf$data, shape=21, size=3, aes(x=size, y=val, colour="data"),  fill="white") +
+    geom_errorbar(data = dataf$data, aes(x=size, y=val, ymin=val-valerr, ymax=val+valerr, colour="data"), width=1) +
+    scale_colour_manual(name = "", values = col, 
+                        labels = c("empirical measurement", 
+                                   bquote(.(summary(dataf$fit1)$coefficients[1]) ~ n^.(summary(dataf$fit1)$coefficients[2])),
+                                   bquote(.(summary(dataf$fit2)$coefficients[1]) ~ n^.(summary(dataf$fit2)$coefficients[2])*log(n))
+                        )
+    ) + 
+    guides(color = guide_legend(override.aes = list(shape = c(1, NA, NA), 
+                                                    linetype = c("blank", "solid", "solid"),
+                                                    colour = c("blue", "red", "black")
+    ) 
+    )
+    ) +
+    coord_cartesian(xlim = c(min(dataf$data$size), max(dataf$data$size)), ylim = c(min(dataf$data$val-dataf$data$valerr),max(dataf$data$val+dataf$data$valerr))) + 
+    xlab("number of points") +
+    ylab("time (s)") +
+    ggtitle(alg) +
+    theme_bw() + 
+    theme(legend.justification = c(0, 1), 
+          legend.position = c(0.05, 1.05), 
+          legend.box.margin=margin(c(5,5,5,5)),
+          legend.background = element_rect(fill='transparent'))
+  #
+  cat('\n\n') 
+  print(figure)
+}
+```
+
+
+# Discussion
+
+Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+
+\FloatBarrier
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+
+# Appendix
+
+## Numerical Data 
+
+Mean and standard error of sorting lists of different sizes. All times measured in seconds.
+
+```{r data-summary, results='asis'}
+library(knitr)
+for (alg in params$algorithm) {
+  data <- algorithm_data[[alg]]$data
+  table_dataframe <- data.frame(
+    "size" = data$size,
+    "tcmean" = format(data$val, scientific=TRUE, digits = 3),
+    "tcstderr" = format(data$valerr, scientific=TRUE, digits = 3)
+  )
+  
+  print(kable(table_dataframe, "pipe",
+              col.names = c("list size", "mean time", "std. error"), 
+              caption = paste(sprintf("\\label{tab:%s} ", alg), "Summary of the experimental results for ", alg, ".", sep="")))
+}
+
+
+```
+
+## Model Fitting 
+
+```{r}
+for (alg in params$algorithm) {
+  hyphens <- paste(rep("-", nchar(alg)), collapse="")
+  cat(paste(alg, "\n", hyphens, "\n", sep = ""))
+  data <- algorithm_data[[alg]]
+  show(summary(data$fit1))
+  show(summary(data$fit2))
+}
+```
+
+
+
+
+
