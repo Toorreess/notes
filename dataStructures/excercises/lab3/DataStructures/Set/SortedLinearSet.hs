@@ -4,10 +4,9 @@
 --
 -- Data Structures. Grado en Informática. UMA.
 --
--- STUDENT'S NAME:
+-- STUDENT'S NAME: TORRES POSTIGO, JOSE
 -------------------------------------------------------------------------------
-
-module DataStructures.Set.SortedLinearSet 
+module DataStructures.Set.SortedLinearSet
   ( Set
   , empty
   , isEmpty
@@ -20,11 +19,12 @@ module DataStructures.Set.SortedLinearSet
 
   , union
   , intersection
-  , difference  
+  , difference
   ) where
 
 import Data.List(intercalate)
 import Test.QuickCheck
+import Data.Bool (Bool(True, False))
 
 -- Invariants for this data structure:
 --  * (INV1) All Nodes store different elements (no repetitions)
@@ -41,22 +41,35 @@ import Test.QuickCheck
 data Set a  = Empty | Node a (Set a)
 
 empty :: Set a
-empty = undefined
+empty = Empty
 
 isEmpty :: Set a -> Bool
-isEmpty = undefined
+isEmpty Empty = True
+isEmpty _     = False
 
 isElem :: (Ord a) => a -> Set a -> Bool
-isElem = undefined
+isElem e Empty = False
+isElem e (Node x s)
+  | e < x = False
+  | otherwise = isElem e s || e == x
 
 insert :: (Ord a) => a -> Set a -> Set a
-insert = undefined
+insert e Empty = Node e Empty
+insert e (Node x s)
+  | e < x     = Node e (Node x s)
+  | e == x    = Node x s  -- Removes repetition
+  | otherwise = Node x (insert e s)
 
 delete :: (Ord a) => a -> Set a -> Set a
-delete = undefined
+delete e Empty = Empty
+delete e (Node x s)
+  | e < x     = Node x s
+  | e == x    = s
+  | otherwise = Node x (delete e s)
 
 size :: Set a -> Int
-size = undefined
+size Empty = 0
+size (Node _ s) = 1 + size s
 
 fold :: (a -> b -> b) -> b -> Set a -> b
 fold f z = fun
@@ -65,13 +78,13 @@ fold f z = fun
   fun (Node x s)  = f x (fun s)
 
 union :: (Ord a) => Set a -> Set a -> Set a
-union = undefined
+union s s' = fold insert s s'
 
 difference :: (Ord a) => Set a -> Set a -> Set a
-difference = undefined
+difference s s' = fold delete s s'
 
 intersection :: (Ord a) => Set a -> Set a -> Set a
-intersection = undefined
+intersection s s' = fold (\x inter -> if isElem x s then insert x inter else inter) empty s'
 
 
 
