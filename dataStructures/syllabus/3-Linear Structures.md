@@ -26,3 +26,7 @@ We will separate interfaces for data structures and their implementations.
 -  **Interface**: signature describing operations supported by data structure.
 - **Implementation**: actual code realizing data structure.
 - **Cilent**: a program using the data structure.
+
+## Iterators vs Folds
+- An ***iterator*** is a design pattern that abstracts the process of traversing a sequence of elements.
+- In Haskell a fold operation is used instead to operate all elements in a data structure.
