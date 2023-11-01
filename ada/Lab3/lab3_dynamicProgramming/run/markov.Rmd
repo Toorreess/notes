@@ -1,0 +1,136 @@
+---
+title: "Maximum Likelihood Estimation in Hidden Markov Models"
+subtitle: "The Viterbi Algorithm"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: false
+    extra_dependencies: ["placeins"]
+papersize: a4
+fontsize: 11pt
+geometry:
+  - top=1in
+  - bottom=1in
+  - left=1in
+  - right=1in
+params: 
+  algorithm: "Viterbi"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Objectives
+
+Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+
+# Experimental Setup
+
+Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+
+\begin{table}[!h]
+\caption{Computational environment considered.}
+\begin{tabular}{lp{0.8\linewidth}}
+\hline
+CPU       & Write here your Processor specs, RAM \\
+OS        & Write here your Operating system name and version\\
+Java      & Write here your Java version\\
+\hline
+\end{tabular}
+\label{tab:conf}
+\end{table}
+
+
+# Empirical Results
+
+A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix. 
+
+Describe the results in Figure \@ref(fig:show-time). The coefficients of the statistical fitting are provided in the Appendix.
+
+```{r load-data}
+read_stats <- function  (name) {
+  # Reading the data
+  filename <- paste(name, '-stats.txt', sep="")
+  rawdata <- read.table(filename)
+  # Get range values
+  num_states <- unique(rawdata$V1)
+  observation_lengths <- unique(rawdata$V2)
+  # Get averages
+  stderr <- function(x) sd(x)/sqrt(length(x))
+  dataframe <- data.frame(
+    "states"       = rawdata[,1],
+    "observations" = rawdata[,2],
+    "tavg"         = apply(t(rawdata)[c(-1,-2),], 2, median)
+  ) 
+  observation_length_values <- length(observation_lengths)
+  num_states_values <- length(num_states)
+  n <- dim(dataframe)[1];
+  c0 <- log(dataframe$tavg[n]/dataframe$tavg[n-observation_length_values])/log(dataframe$states[n]/dataframe$states[n-observation_length_values])
+  b0 <- log(dataframe$tavg[n]/dataframe$tavg[n-1])/log(dataframe$observations[n]/dataframe$observations[n-1])
+  a0 <- dataframe$tavg[n]/(dataframe$observations[n]^b0 * dataframe$states[n]^c0)
+  datafit = nls(tavg ~ a * observations^b * states^c , data=dataframe, start = list(a = a0, b = b0, c = c0))
+  dataframe$predicted <- predict(datafit, dataframe)
+
+  datalist <- list(data = dataframe, datafit = datafit)
+}
+
+experimentaldata <- read_stats(params$algorithm)
+
+```
+
+
+```{r show-time, fig.cap="Time as a function of the number of states for different number of observations. The dotted lines show a fit to a power model $t = a\\cdot {\\rm observations}^b \\cdot {\\rm states}^c$."}
+library(ggplot2)
+library(scales)
+
+graphical_representation <- function (dataframe, name) {
+  fig <- ggplot(data = dataframe, aes(x = states, y = tavg, colour = observations, group = observations)) + 
+    theme_bw()  +
+    xlab ("#states") +
+    ggtitle (paste(name, "algorithm for different sequences of observations")) +
+    geom_point(shape=21, size=3,  fill="white") +
+    geom_line(aes(x=states, y = predicted), linetype="dotted") +
+    scale_y_continuous(name = "time (s)", labels = scales::number_format(accuracy = 0.01)) +
+    theme(legend.justification = c(0, 1), 
+          legend.position = c(0, .99), 
+          legend.box.margin=margin(c(5,5,5,5)))
+    
+  
+  show (fig)
+  }
+
+graphical_representation(experimentaldata$data, params$algorithm)
+```
+
+
+
+
+# Discussion
+
+Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+
+\FloatBarrier
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+
+# Appendix
+
+## Data Summary 
+
+```{r data-summary}
+library(knitr)
+kable(experimentaldata$data[c("states", "observations", "tavg")], "pipe",
+      col.names = c("#states", "#observations", "time (s)"), 
+      caption = "Summary of the experimental results") 
+```
+
+## Model Fitting 
+
+```{r}
+show(summary(experimentaldata$datafit))
+```
+

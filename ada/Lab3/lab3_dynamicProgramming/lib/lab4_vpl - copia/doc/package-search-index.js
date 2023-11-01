@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"es.uma.ada"},{"l":"es.uma.ada.datastructures"},{"l":"es.uma.ada.datastructures.graph"},{"l":"es.uma.ada.datastructures.tuple"},{"l":"es.uma.ada.problem.statistical"}];updateSearchResults();

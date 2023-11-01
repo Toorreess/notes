@@ -1,0 +1,13 @@
+4
+healthy	.7
+latent	.15
+infect	.1
+recover	.05
+healthy	2	healthy .9	latent .1
+latent	3	healthy .3	latent .4	infect .3
+infect	2	infect .7	recover .3
+recover	2	healthy .1	recover .9
+healthy	2	none .9	mild .1
+latent	3	none .2	mild .5	severe .3
+infect	3	none .1	mild .3	severe .6
+recover	2	none .8	mild .2
