@@ -1,7 +1,7 @@
 ---
 title: "Maximum Likelihood Estimation in Hidden Markov Models"
 subtitle: "The Viterbi Algorithm"
-author: "Your Name"
+author: "Jose Torres Postigo"
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_document2:
@@ -20,24 +20,39 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 # Objectives
 
-Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+The goal of this lab excercise is to practise with dynamic programming, a technique where an algorithmic problem is broken down into sub-problems, the results are saved an then the sub-problems are optimized to find the optimal solution. 
+
+For this project, it will be implemented the Viterbi's algorithm for maximum likelihood estimation of the internal states of a hidden Markov Model. This algorithm is a dynamic programming algorithm for decoding convolutional codes, proposed by A.J. Viterbi.
+
+A Hidden Markov Model $HMM(S,\ O,\ \pi,\ \rho,\ \omega)$ is a probabilistic model of a system with hidden variables, based on the Markov Model, where:
+- $S = \{s_1,\ ...,\ s_n \}$ are the **states** (values of the random variable).
+
+- $\pi = \{\pi_1,\ ...,\ \pi_n\}$ are the **marginal probabilities** of each state.
+
+- $\rho = \{\rho\ _{ij}\ |\ 1\le i,j \le n\}$ are the **transition probabilities** among the states.
+
+- $O = \{o_1,\ ...,\ o_n \}$ are the possible observable **outputs** of the system.
+
+- $\omega = \{\omega\ _{ij}\ |\ 1 \le i \le n,1 \le j \le m \}$ are the **output probabilities**, i.e. $\omega\ _{ij}$ is the  probability of observing output $o_j$ if the system is in state $s_i$.
+
+After the implementation, it will be a subject matter the results obtained: number of states, number of observations and time taken for each execution.
 
 # Experimental Setup
 
-Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+For this experiment, the Viterbi's algorithm will be run through a class given by the lecturer, which is going to run tests of it using hidden Markov models of increasing number of states and sequences of observations of increasing length. The initial values for these tests are 8 states and 256 observations, up to 202 states and 6561 observations.
 
 \begin{table}[!h]
 \caption{Computational environment considered.}
 \begin{tabular}{lp{0.8\linewidth}}
 \hline
-CPU       & Write here your Processor specs, RAM \\
-OS        & Write here your Operating system name and version\\
-Java      & Write here your Java version\\
+CPU       & Intel® Core™ i5 11600KF, 16GB \\
+OS        & Windows 11 Home 22H2 \\
+Java      & openjdk 17.0.7 2023-04-18 \\
 \hline
 \end{tabular}
 \label{tab:conf}
@@ -46,9 +61,13 @@ Java      & Write here your Java version\\
 
 # Empirical Results
 
-A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix. 
+A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix.
 
-Describe the results in Figure \@ref(fig:show-time). The coefficients of the statistical fitting are provided in the Appendix.
+It can be seen in this graph that the execution time increases with the number of states. Because the Viterbi's algorithm needs to consider all possible sequences of states in order to find the most likely sequence, the more states are there, the more possible sequences exists and the longer the algorithm takes to compute the result.
+
+The graph shows that the execution time increases also with the number of possible observable outputs. This is because the Viterbi's algorithm needs to consider all possible sequences of states for the entire observation sequence. The greater the number of observations, the greater is the number of possible sequences, and it will take longer to the algorithm to find the most likely one.
+
+Also, The graph suggests that the Viterbi algorithm can be used efficiently for sequences of observations with a moderate number of states, such as 05 or 100 states. However, the algorithm may become computationally expensive for a large number of observations and a large number of states, such as 6\,000 observations with 200 states, which takes almost a second to compute.
 
 ```{r load-data}
 read_stats <- function  (name) {
@@ -105,12 +124,12 @@ graphical_representation <- function (dataframe, name) {
 graphical_representation(experimentaldata$data, params$algorithm)
 ```
 
-
-
-
 # Discussion
 
-Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+The empirical results I obtained highly match the theoretical predictions in general as the standard error is very low. There are some measurements which are not as fitted to the model as it should be, but this does not necessarily mean that there is a problem with the model nor with the implementation, but with the Hardware used.
+
+The Viterbi algorithm seems to be a a powerful tool for finding the most likely sequence of hidden states for a wide range of sequences of observations. Also it seems to be computationally expensive with a large number of states and observations, so it should be taken into consideration using a more efficient algorithm or reducing the number of states and/or observations in these cases.
+
 
 \FloatBarrier
 
@@ -128,7 +147,7 @@ kable(experimentaldata$data[c("states", "observations", "tavg")], "pipe",
       caption = "Summary of the experimental results") 
 ```
 
-## Model Fitting 
+## Model Fitting
 
 ```{r}
 show(summary(experimentaldata$datafit))
