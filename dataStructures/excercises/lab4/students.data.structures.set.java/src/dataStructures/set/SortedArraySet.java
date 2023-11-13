@@ -56,25 +56,49 @@ public class SortedArraySet<T extends Comparable<? super T>> implements SortedSe
     //   * found is set to false and index is set to index of cell in array
     //   where elem should be stored.
     Finder(T elem) {
-      // todo
+        found = false;
+        int l = 0, r = size-1, mid = 0;
+
+        while(!found && l<=r){
+            mid = (l+r)/2;
+            if(elements[mid] == elem){
+                found = true;
+            } else if(elements[mid].compareTo(elem) < 0){
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        index = found ? mid : l;
     }
   }
 
   public void insert(T elem) {
-    // todo
-    //  Implement insert by using Finder
+    Finder f = new Finder(elem);
+    if(!f.found){
+        ensureCapacity();
+        for(int i = size; i > f.index; i--){
+            elements[i] = elements[i-1];
+        }
+        elements[f.index] = elem;
+        size++;
+    }
 
   }
 
   public boolean isElem(T elem) {
-    // todo
-    //  Implement isElem by using Finder
-    return false;
+    Finder f = new Finder(elem);
+    return f.found;
   }
 
   public void delete(T elem) {
-    // todo
-    //  Implement delete by using Finder
+    Finder f = new Finder(elem);
+    if(f.found){
+        for(int i = f.index; i < size-1; i++){
+            elements[i] = elements[i+1];
+        }
+        size--;
+    }
   }
 
   // An iterator for this class
@@ -82,17 +106,15 @@ public class SortedArraySet<T extends Comparable<? super T>> implements SortedSe
     private int index;
 
     public SortedArraySetIterator() {
-      // todo
+      index = 0;
     }
 
     public boolean hasNext() {
-      // todo
-      return false;
+      return index < size;
     }
 
     public T next() {
-      // todo
-      return null;
+      return elements[index++];
     }
   }
 
@@ -114,7 +136,9 @@ public class SortedArraySet<T extends Comparable<? super T>> implements SortedSe
   // precondition: elem should be larger than any element in set
   private void append(T elem) {
     assert size == 0 || elem.compareTo(elements[size - 1]) > 0 : "append: precondition failed";
-    // todo
+    ensureCapacity();
+    elements[size] = elem;
+    size++; 
   }
 
   // Copy constructor: builds a new SortedLinkedSet with the same
@@ -129,7 +153,12 @@ public class SortedArraySet<T extends Comparable<? super T>> implements SortedSe
     //      in set1 or in set2.
     //      Neither set1 nor set2 should be modified.
 
-    // todo
+    SortedArraySet<T> union = new SortedArraySet<>();
+    int index1=0, index2=0;
+    while(index1 < set1.size || index2 < set2.size){
+
+    }
+    
     return null;
   }
 
