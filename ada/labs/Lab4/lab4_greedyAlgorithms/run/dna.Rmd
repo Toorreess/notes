@@ -1,0 +1,238 @@
+---
+title: "Analysis of Greedy DNA Reconstruction Algorithms"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: false
+    extra_dependencies: ["placeins", "subfig"]
+papersize: a4
+fontsize: 11pt
+geometry:
+  - top=1in
+  - bottom=1in
+  - left=1in
+  - right=1in
+params:
+  filename_naive: "NaiveGreedyPathSequencing-stats.txt"
+  filename_bidirectional: "NaiveBidirectionalGreedyPathSequencing-stats.txt"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Objectives
+
+Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+
+# Experimental Setup
+
+Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+
+\begin{table}[!h]
+\caption{Computational environment considered.}
+\begin{tabular}{lp{0.8\linewidth}}
+\hline
+CPU       & Write here your Processor specs, RAM \\
+OS        & Write here your Operating system name and version\\
+Java      & Write here your Java version\\
+\hline
+\end{tabular}
+\label{tab:conf}
+\end{table}
+
+
+# Empirical Results
+
+A summary of the experimental results is provided in Tables \@ref(tab:data-summary-naive) and  
+\@ref(tab:data-summary-bidirectional) in the Appendix.
+
+Describe the results in Figure \@ref(fig:time) and Figure \@ref(fig:length). The underlying
+statistical models are provided in the Appendix.
+
+```{r load-data}
+# makes a power fit from triples (x, y, z), where 
+# z is the dependent variable and triples are sorted
+# first by x value and then by y value. It is assumed that for 
+# each x value there are series_length values of y
+makefit <- function (x, y, z, series_length) {
+  n <-length(x);
+  ind <- seq(2*series_length,n,series_length);
+  c0 <- mean(log(z[ind]/z[ind-series_length])/log(x[ind]/x[ind-series_length]))
+  b0 <- mean(log(z[ind]/z[ind-1])/log(y[ind]/y[ind-1]))
+  a0 <- mean(z[ind]/(y[ind]^b0 * x[ind]^c0))
+  datafit = nls(z ~ a * y^b * x^c, 
+                data = data.frame("x" = x, "y" = y, "z" = z), 
+                start = list(a = a0, b = b0, c = c0))
+  columns <- c("x", "y", "predicted", "read_length")
+  newdata <- data.frame (matrix(nrow = 0, ncol = length(columns)))
+  colnames(newdata) <- columns
+  k <- 1
+  for (i in seq(x[1], x[n])) {
+    for (j in seq(y[1], y[series_length])) {
+      newdata[k, "x"] = i
+      newdata[k, "y"] = j
+      newdata[k, "read_length"] = sprintf("%d", j)
+      k <- k + 1
+    }
+  }
+  newdata$predicted <- predict(datafit, newdata)
+  list("fit" = datafit, "predicted" = newdata)
+} 
+
+read_data <- function(filename) {
+  # Reading the data
+  rawdata = read.table(filename);
+  # Compute basic statistics 
+  n <- dim(rawdata)[2];
+  one_ind <- seq(3, n, 3)
+  two_ind  <- seq(4, n, 3)
+  three_ind  <- seq(5, n, 3)
+  stderr <- function(x) sd(x)/sqrt(length(x))
+  dataframe <- data.frame(
+    "seqlength" = rawdata[,1],
+    "readlength" = rawdata[,2],
+    "read_length" = sprintf("%d", rawdata[,2]),
+    "time" = apply(t(rawdata)[one_ind,], 2, mean),
+    "timeerr" = apply(t(rawdata)[one_ind,], 2, stderr),
+    "sollength" = apply(t(rawdata)[two_ind,], 2, mean),
+    "sollengtherr" = apply(t(rawdata)[two_ind,], 2, stderr),
+    "diff" = apply(t(rawdata)[three_ind,], 2, mean),
+    "differr" = apply(t(rawdata)[three_ind,], 2, stderr)
+  )
+  
+  num_read_values <- length(unique(dataframe$readlength))
+  lt <- makefit(dataframe$seqlength, dataframe$readlength, dataframe$time, num_read_values)
+  ll <- makefit(dataframe$seqlength, dataframe$readlength, dataframe$sollength-1, num_read_values)
+  result <- list("dataframe" = dataframe, "lt" = lt, "ll" = ll)
+}
+
+datanaive <- read_data(params$filename_naive)
+databidirectional <- read_data(params$filename_bidirectional)
+
+```
+
+```{r time, fig.cap="Time as a function of the sequence length for different read lengths.", fig.subcap=c('naive', 'bidirectional'), fig.asp=1, fig.width=3}
+library(ggplot2)
+create_figure_time <- function(dataframe, lt, title) {
+  figure_time <- ggplot(data=dataframe, aes(x=seqlength, y=time, colour = read_length, group=read_length)) + 
+    geom_errorbar(aes(ymin=time-timeerr, ymax=time+timeerr), width=.02) +
+    geom_line(data = lt$predicted, aes(x=x, y=predicted)) +
+    geom_point(shape=21, size=3, fill="white") +
+    xlab ("sequence length") +
+    ylab ("time (s)") +
+    theme_bw() + 
+    theme(legend.justification = c(0, 1), 
+          legend.position = c(0, .99), 
+          legend.box.margin=margin(c(5,5,5,5)),
+          legend.background = element_rect(fill='transparent')) +
+    ggtitle(title)
+  show(figure_time)
+}
+
+create_figure_time(datanaive$dataframe, datanaive$lt, "naive")
+create_figure_time(databidirectional$dataframe, databidirectional$lt, "bidirectional")
+
+```
+
+
+```{r length, fig.cap="Length excess of the reconstructed solution as a function of the sequence length for different read lengths.", fig.subcap=c('naive', 'bidirectional'), fig.asp=1, fig.width=3}
+library(ggplot2)
+
+create_figure_length <- function(dataframe, ll, title) {
+  figure_length <- ggplot(data=dataframe, aes(x=seqlength, y=100*(sollength-1), colour = read_length, group=read_length)) + 
+    geom_errorbar(aes(ymin=100*(sollength-sollengtherr-1), ymax=100*(sollength+sollengtherr-1)), width=.02) +
+    geom_line(data = ll$predicted, aes(x=x, y=100*predicted)) +
+    geom_point(shape=21, size=3, fill="white") +
+    xlab ("sequence length") +
+    ylab ("length excess (%)") +
+    theme_bw() + 
+    theme(legend.justification = c(0, 1), 
+          legend.position = c(.5, .99), 
+          legend.box.margin=margin(c(5,5,5,5)),
+          legend.background = element_rect(fill='transparent')) +
+    ggtitle(title)
+  show(figure_length)
+}
+
+create_figure_length(datanaive$dataframe, datanaive$ll, "naive")
+create_figure_length(databidirectional$dataframe, databidirectional$ll, "bidirectional")
+
+```
+
+
+# Discussion
+
+Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+
+\FloatBarrier
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+
+# Appendix
+
+## Data Summary 
+Summary of the experimental results for sequences and reads of different sizes. The mean and standard error are provided for the computational time and the length excess of the sequence generated over the true solution.
+
+```{r data-summary-naive}
+library(knitr)
+library(kableExtra)
+create_table <- function(dataframe, text) {
+  table_dataframe <- data.frame(
+    "seq" = dataframe$seqlength,
+    "read" = dataframe$readlength,
+    "time_mean" = format(dataframe$time, scientific=FALSE, digits = 1),
+    "time_err" = format(dataframe$timeerr, scientific=FALSE, digits = 1),
+    "excess" = format(100*(dataframe$sollength-1), scientific=FALSE, digits = 2),
+    "excesserr" = format(100*dataframe$sollengtherr, scientific=FALSE, digits = 2)
+  )
+  kable(table_dataframe, 
+        longtable = TRUE,
+      col.names = c("sequence", "read", "time (mean)", "time (stderr)", "excess (mean)", "excess (stderr)"),  
+      caption = text) %>%
+  row_spec(0,bold=TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+create_table(datanaive$dataframe, "Results for the naive greedy algorithm.") 
+
+```
+
+```{r data-summary-bidirectional}
+create_table(databidirectional$dataframe, "Results for the bidirectional greedy algorithm.") 
+```
+
+## Model Fitting
+
+Summary of the statistical models found. In all cases, $x$ corresponds to sequence length, and $y$ to read length.
+
+### Naive Greedy Algorithm
+
+#### Model for time
+
+```{r}
+show (datanaive$lt$fit)
+```
+
+#### Model for length
+
+```{r}
+show (datanaive$ll$fit)
+```
+  
+### Naive Bidirectional Greedy Algorithm
+
+#### Model for time
+
+```{r}
+show (databidirectional$lt$fit)
+```
+
+#### Model for length
+
+```{r}
+show (databidirectional$ll$fit)
+```
