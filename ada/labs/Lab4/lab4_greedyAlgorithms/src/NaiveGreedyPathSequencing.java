@@ -23,14 +23,9 @@ public class NaiveGreedyPathSequencing extends GreedyPathSequencing {
 
 	@Override
 	protected int chooseNext(List<Integer> path, Set<Integer> reads) {
-		// TODO complete this method
-		// Check which is the fragment in reads that has the maximum overlap
-		// with the last fragment in path. Recall that the superclass has
-		// computed a matrix overlaps[i][j] that contains the overlap of
-		// fragment j placed after fragment i.
 
         int lastFragment = path.get(path.size() - 1);
-        int next = -1; // Inicializar con un valor no válido.
+        int next = -1;
 
         int maxOverlap = Integer.MIN_VALUE;
 
