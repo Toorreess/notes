@@ -1,6 +1,6 @@
 ---
 title: "Analysis of Greedy DNA Reconstruction Algorithms"
-author: "Your Name"
+author: "Jose Torres Postigo"
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_document2:
@@ -20,38 +20,61 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 # Objectives
 
-Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+The objectives of this lab excercise is the implementation, evaluation and comparison of the performance of two DNA sequencing algorithm implementations: the NaiveGreedyPathSequencing and NaiveBidirectionalGreedyPathSequencing. 
+
+Both algorithms aim to reconstruct a DNA sequence from a set of fragmented reads obtained through Shotgun sequencing. The unidirectional naive algorithm follows a simple greedy approach, selecting the next fragment based on maximum overlap. The bidirectional variation extends the NaiveGreedyPathSequencing by considering extensions in both forward and backward directions.
+
+Finding the best reconstruction is equivalent to finding the minimum Hamiltonian path (path that visits each vertex exactly once), if we imagine a weighted complete directed graph $G(V,\ E, \ w)$, where
+
+- There is a vertex $v_i$ for each fragment $f_i,\ 1 \le n$.
+
+- There is a directed edge $(v_i,\ v_j)$ for $1 \le\ i,\ j \le n$.
+
+- The weight $w((v_i,\ v_j))$ of each edge is the overlap $\omega(f_i,\ f_j)$.
+
+A generic greedy path-building approach for the Hamiltonian path problem would pick a starting vertex and then subsequently select the next vertex to visit in a greedy way.
+
+Adapting this aproach for the DNA assembly problem, in the unidirectional implementation we pick an intial fragment at random and then in each step we assemble the fragment (among those still available) with the largest overlap to the last one picked. For the improved version of this, the bidirectional variation, it will be picked a fragment to be assembled to either of the two end, whatever it is better.
 
 # Experimental Setup
 
-Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
-
+For these experiments, both algorithms will be run through a class given by the lecturer, which is going to run tests for them using sequences and reads of incresing number. The initial values for these tests are 
+five sequence lengths, starting at a size of 128 and doubling each time, with read sizes from 4 to 8 and 100 tests per parameter combination; up to sequences with a size of 2048.  
+```{=tex}
 \begin{table}[!h]
 \caption{Computational environment considered.}
 \begin{tabular}{lp{0.8\linewidth}}
 \hline
-CPU       & Write here your Processor specs, RAM \\
-OS        & Write here your Operating system name and version\\
-Java      & Write here your Java version\\
+CPU       & Intel® Core™ i5 11600KF, 16GB \\
+OS        & Windows 11 Home 22H2 \\
+Java      & openjdk 17.0.7 2023-04-18 \\
 \hline
 \end{tabular}
 \label{tab:conf}
 \end{table}
-
-
+```
 # Empirical Results
 
-A summary of the experimental results is provided in Tables \@ref(tab:data-summary-naive) and  
-\@ref(tab:data-summary-bidirectional) in the Appendix.
+A summary of the experimental results is provided in Tables \@ref(tab:data-summary-naive) and \@ref(tab:data-summary-bidirectional) in the Appendix.
 
-Describe the results in Figure \@ref(fig:time) and Figure \@ref(fig:length). The underlying
-statistical models are provided in the Appendix.
+In Figure 1, it can be seen the plots regarding the time as a function of the sequence length for different reads lengths. Taking a look at the results, it can firmly be said that, although for small sequences both take approximately the same time, in general the naive implementation is very fast, while the bidirectional implementation is much slower. 
 
+This is because the naive implementation simply reads the DNA sequence from one end to the other, while the bidirectional implementation reads the sequence from both ends simultaneously. This makes the bidirectional implementation slower, but the length excess is going to be lower, because it is less likely to miss a better read.
+
+For both implementations, the time complexity seems to be $O(n\ log\ n)$. Studying the plots, the time complexity do not depend on the length of the fragments because they present the same growth rate for different read lengths. The sequence length of the input, however, is a key factor that affect directly to the time complexity.
+
+In Figure 2, it can be seen the plots regarding the length excess of the reconstructed solution as a function of the sequence length for different read lengths. The first plot shows the results for the naive implementation of the algorithm, and the second plot shows the results for the bidirectional implementation.
+
+The naive implementation of the algorithm is very fast, as has been pointed out above, but presents a larger percentage of length excess than the bidirectional implementation. This is because the naive implementation simply reads the DNA sequence from one end, missing possible better matches if this occurs at the other end of the sequence.
+
+The bidirectional implementation of the algorithm, although is slower than the naive implementation, it is less likely to miss the best match in each case. This is because the bidirectional implementation reads the DNA sequence from both ends simultaneously. 
+
+It is a surprise that the bidirectional implementation is very inaccurate regarding the theoretical predictions of the length excesses. Some of the readings made in the execution are much lower than the theoretical prediction, others much higher.
 ```{r load-data}
 # makes a power fit from triples (x, y, z), where 
 # z is the dependent variable and triples are sorted
@@ -137,7 +160,6 @@ create_figure_time(databidirectional$dataframe, databidirectional$lt, "bidirecti
 
 ```
 
-
 ```{r length, fig.cap="Length excess of the reconstructed solution as a function of the sequence length for different read lengths.", fig.subcap=c('naive', 'bidirectional'), fig.asp=1, fig.width=3}
 library(ggplot2)
 
@@ -162,19 +184,25 @@ create_figure_length(databidirectional$dataframe, databidirectional$ll, "bidirec
 
 ```
 
+\FloatBarrier
 
 # Discussion
+Comparing the algorithms involves assessing their performance in terms of both time complexity and the length of the reconstructed sequence. The experimental results obtained have been analyzed from running both the unidirectional and bidirectional implementations under different scenarios. 
 
-Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+After studying the results, it can be said that the naive implementation of the DNA sequence algorithm is probably the most commonly used implementation because it is fast enough for most applications. However, the bidirectional implementation is more accurate, especially for longer sequences. So it is up to each one to make the decision of what implementation is going to use, depending on what are their necessities.
+
+In general the theoretical predictions are very accurate, except the one seen in Figure 2 for bidirectional implementation. This could be for some reasons: the Hardware of this experimental setup is not the appropiate one or there is some error in the implementation. It could not be, in my opinion, a problem with the regression model because the readings obtained are kind of random.
 
 \FloatBarrier
 
+```{=tex}
 \setcounter{section}{0}
 \renewcommand{\thesection}{\Alph{section}}
-
+```
 # Appendix
 
-## Data Summary 
+## Data Summary
+
 Summary of the experimental results for sequences and reads of different sizes. The mean and standard error are provided for the computational time and the length excess of the sequence generated over the true solution.
 
 ```{r data-summary-naive}
@@ -222,7 +250,7 @@ show (datanaive$lt$fit)
 ```{r}
 show (datanaive$ll$fit)
 ```
-  
+
 ### Naive Bidirectional Greedy Algorithm
 
 #### Model for time
