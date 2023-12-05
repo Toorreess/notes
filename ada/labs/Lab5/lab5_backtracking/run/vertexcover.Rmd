@@ -1,0 +1,149 @@
+---
+title: "Analysis of the Phase Transition in the Complexity of Solving Vertex Cover"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: false
+    extra_dependencies: ["placeins"]
+papersize: a4
+fontsize: 11pt
+geometry:
+  - top=1in
+  - bottom=1in
+  - left=1in
+  - right=1in
+params:
+  filename: "er-stats.txt"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Objectives
+
+Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+
+# Experimental Setup
+
+Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+
+\begin{table}[!h]
+\caption{Computational environment considered.}
+\begin{tabular}{lp{0.8\linewidth}}
+\hline
+CPU       & Write here your Processor specs, RAM \\
+OS        & Write here your Operating system name and version\\
+Java      & Write here your Java version\\
+\hline
+\end{tabular}
+\label{tab:conf}
+\end{table}
+
+
+# Empirical Results
+
+A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix. 
+
+Describe the results in Figure \@ref(fig:search-tree-size) and Figure \@ref(fig:solvability).
+
+```{r load-data}
+
+# Reading the data
+rawdata = read.table(params$filename);
+# Compute basic statistics 
+n <- dim(rawdata)[2];
+one_ind <- seq(3, n, 2)
+two_ind  <- seq(4, n, 2)
+stderr <- function(x) sd(x)/sqrt(length(x))
+dataframe <- data.frame(
+  "vertices" = sprintf("%d", rawdata[,1]),
+  "cover" = rawdata[,2],
+  "nodes" = apply(t(rawdata)[two_ind,], 2, mean),
+  "nodeserr" = apply(t(rawdata)[two_ind,], 2, stderr),
+  "solvable" = apply(t(rawdata)[one_ind,], 2, mean),
+  "solvableerr" = apply(t(rawdata)[one_ind,], 2, stderr)
+)
+
+# initial and final cover sizes
+c0 <- min(rawdata[,2])
+cf <- max(rawdata[,2])
+
+```
+
+```{r search-tree-size, fig.cap="Number of nodes in the search tree for increasing size of the vertex cover (expressed relative to the number of nodes). Note the use of a logarithmic scale in the vertical axis."}
+library(ggplot2)
+figure_nodes <- ggplot(data=dataframe, aes(x=cover, y=nodes, colour = vertices, group=vertices)) + 
+  geom_smooth(method="gam", formula = y ~ s(x, bs = "cs"), se=F, linewidth=.5) + 
+  geom_errorbar(aes(ymin=nodes-nodeserr, ymax=nodes+nodeserr), width=.02) +
+  geom_point(shape=21, size=3, fill="white") +
+  xlab ("vertex-cover size") +
+  ylab ("nodes expanded") +
+  scale_x_continuous(breaks = seq(from = 0, to = 1, by = .1)) + 
+  scale_y_continuous(trans = "log10") +
+  theme_bw() + 
+  theme(legend.justification = c(0, 1), 
+        legend.position = c(0, .99), 
+        legend.box.margin=margin(c(5,5,5,5)),
+        legend.background = element_rect(fill='transparent')) +
+  ggtitle("Backtracking for Vertex Cover: size of the search tree")
+ show(figure_nodes)
+```
+
+
+```{r solvability, fig.cap="Fraction of solvable instances for increasing size of the vertex cover (expressed relative to the number of nodes)."}
+figure_solvable <- ggplot(data=dataframe, aes(x=cover, y=solvable, colour = vertices, group=vertices)) + 
+  geom_line(linewidth=.5) + 
+  geom_errorbar(aes(ymin=solvable-solvableerr, ymax=solvable+solvableerr), width=.02) +
+  geom_point(shape=21, size=3, fill="white") +
+  xlab ("vertex-cover size") +
+  ylab ("solvability") +
+  geom_line(data=data.frame(x=c(-Inf, +Inf), y = c(.5, .5)), aes(x=x, y=y, group = y), colour = "black", linewidth=.5, linetype = "dashed") + 
+  scale_x_continuous(breaks = seq(from = 0, to = 1, by = .1)) +
+  theme_bw() + 
+  theme(legend.justification = c(0, 1), 
+        legend.position = c(0, .99), 
+        legend.box.margin=margin(c(5,5,5,5)),
+        legend.background = element_rect(fill='transparent')) +
+  ggtitle("Vertex Cover: instance solvability")
+
+show(figure_solvable)
+```
+
+
+# Discussion
+
+Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+
+\FloatBarrier
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+
+# Appendix
+
+## Data Summary 
+
+```{r data-summary}
+library(knitr)
+library(kableExtra)
+table_dataframe <- data.frame(
+    "vertices" = dataframe$vertices,
+    "cover" = dataframe$cover,
+    "nodes_mean" = format(dataframe$nodes, scientific=FALSE, digits = 1),
+    "nodes_err" = format(dataframe$nodeserr, scientific=FALSE, digits = 1),
+    "solvable_mean" = format(dataframe$solvable, scientific=FALSE, digits = 2),
+    "solvable_err" = format(dataframe$solvableerr, scientific=FALSE, digits = 2)
+  )
+kable(table_dataframe, 
+        longtable = TRUE,
+      col.names = c("#vertices", "cover size", "nodes (mean)", "nodes (stderr)", "solv. (mean)", "solv. (stderr)"),  
+      caption = "Summary of the experimental results for different number of vertices and sizes of vertex covers. The mean and standard error are provided for the number of nodes explored and the fraction of solvable instances.") %>%
+  row_spec(0,bold=TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+  
+
