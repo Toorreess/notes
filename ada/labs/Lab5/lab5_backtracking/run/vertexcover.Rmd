@@ -1,6 +1,6 @@
 ---
 title: "Analysis of the Phase Transition in the Complexity of Solving Vertex Cover"
-author: "Your Name"
+author: "Jose Torres Postigo"
 date: "`r Sys.Date()`"
 output:
   bookdown::pdf_document2:
@@ -19,24 +19,63 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 # Objectives
 
-Describe the objective(s) of the project and how these will be accomplished. You must give the necessary context to make the document self-contained, i.e., explain the problem or domain of application considered, the algorithm(s) that will be analyzed, which particular algorithmic issue(s) will be subject to scrutiny, etc.
+The objectives of this lab exercise is the implementation and evaluation of a backtracking algorithm for solving the Vertex Cover problem, and use it to find the critical complexity point.
+
+This algorithm aim to resolve the question \textit{"Does the Graph $G$ have a vertex cover of size, at most, of positive integer $k$?"}. This problem is an NP-complete problem, so there is no general polynomial solution known.
+
+For understanding better this algorithm, let $G(V,\ E)$ be an undirected graph. Consider:
+
+- For any vertex $v \in V,\ sucG (v) = \{w\ |\ (v,\ w)\ \in E\}$, i.e., the vertices connected to v.
+
+- For any partial solution $S \subseteq V$ and vertex $v \in V$,
+\[
+unc_G\ (v,\ S) =
+  \begin{cases}
+    \emptyset & v\ \in\ S \\
+    suc_G\ (v)\ \setminus \ S & v\ \notin\ S
+  \end{cases}
+\]
+
+are the uncovered neighbors of $v$ given $S$, i.e., for any $w \in unc_G\ (v,\ S),\ (v,\ w) \in E$ is an edge uncovered by $S$.
+
+- For any partial solution $S \subseteq V$, $S$ is a vertex cover if, and only if, $v \in V\ \colon\ unc_G (v,\ S) = \emptyset$.
+
+The backtracking approach of this algorithm will follow some steps. Lets consider each search state is a pair $(S,\ i)$, i.e., the current partial solution and the index of the next vertex to be considered.
+
+If $|S|\ >\ k$, the state is unfeasible and can be discarded. Otherwise, check if $S$ is a vertex cover:
+\begin{itemize}
+  \item If yes, a solution has been found.
+
+  \item If not, check if $|S| < k$ and  $i \leq |V|$.
+  
+  \begin{itemize}
+    \item If not, no further vertex can be added and the state can be discarded.
+    \item If yes, check if $unc_G (vi,\ S) = \emptyset$: 
+    \begin{itemize}
+      \item If yes, $v_i$ is useless given $S$. Explore state $(S,\ i + 1)$.
+      \item If not, explore two states: $(S \cup \{v_i\},\ i + 1)$ and $(S \cup unc_G (v_i,\ S),\ i+1)$.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
 
 # Experimental Setup
 
-Describe the configuration used in the experiments. This implies the following: (1) indicate what kind of experiments will be conducted (i.e., indicate in which way the algorithm will be run and what will be measured) and what will be the particular parameters that will be used in those experiments (i.e., their numerical values); (2) provide a description of the computational environment in which the experiments are run (see Table \ref{tab:conf}).
+For these experiments, the algorithm will be run through a class given by the lecturer, which is going to run tests for it using graphs with increasing number of vertices in steps of 5, with vertex covers from 1 to the total number of vertices, generating 1\,000 tests for each size. The initial value for the number of vertices is 20, and goes up to 40.
+
+In all cases, graphs are generated following the Erdős-Renyi model with edge probability $\frac{2}{n}$, where $n$ is the number of vertices.
 
 \begin{table}[!h]
 \caption{Computational environment considered.}
 \begin{tabular}{lp{0.8\linewidth}}
 \hline
-CPU       & Write here your Processor specs, RAM \\
-OS        & Write here your Operating system name and version\\
-Java      & Write here your Java version\\
+CPU       & Intel® Core™ i5 11600KF, 16GB \\
+OS        & Windows 11 Home 22H2 \\
+Java      & openjdk 17.0.7 2023-04-18 \\
 \hline
 \end{tabular}
 \label{tab:conf}
@@ -47,8 +86,19 @@ Java      & Write here your Java version\\
 
 A summary of the experimental results is provided in Table \@ref(tab:data-summary) in the Appendix. 
 
-Describe the results in Figure \@ref(fig:search-tree-size) and Figure \@ref(fig:solvability).
+The graph of Figure 1 shows the number of nodes in the search tree for increasing the size of the vertex cover, expressed relative to the number of nodes, and for differents numbers of vertices. The x-axis represents the vertex cover size, being this our control parameter $\gamma$, which is the fraction of the vertices that are included in the vertex cover. The y-axis represents the number of nodes in the search tree. The vertical axis uses a logarithmic scale to make the exponential growth more visible.
 
+The graph shows that the number of nodes in the search tree increases exponentially with the size of the vertex cover. This is because the backtracking algorithm must explore all possible combinations of vertices to find a vertex cover. As the size of the vertex cover increases, the number of possible combinations increases exponentially. 
+
+This really happens until a vertex cover size of $0.4$, where we can find the critical complexity point. This means that the peak of difficulty reaches the maximum value of our control parameter around $\gamma = 0.4$. From this point, the number of nodes expanded decreases until a vertex cover of $0.65$ approximately, and it stabilizes then.
+
+We can see in the Figure 1 there are two well defined regions: the first one when $\gamma \leq 0.4$, and the other $\gamma > 0.4$.
+
+The plot of Figure 2 shows the fraction of instances of the vertex cover problem that are solvable for increasing values of the vertex cover size. The vertex cover size is expressed relative to the number of nodes in the graph. The x-axis of the graph shows the vertex cover size, from 0 to 1.0, where 1.0 represents a vertex cover of the entire graph. The y-axis shows the fraction of instances that are solvable for each vertex cover size.
+
+The plot shows that the fraction of solvable instances increases as the vertex cover size increases. This is because it becomes easier to find a vertex cover that covers all edges in the graph as the number of vertices that must be included in the vertex cover increases.
+
+I consider for values $\gamma < 0.35$, the instances are over-constrained. For values in between, $0.35 \leq \gamma < 0.45$, we can find the critically-constrained instances. And, for value $\gamma \geq 0.45$, the instances are under-constrained.
 ```{r load-data}
 
 # Reading the data
@@ -115,7 +165,11 @@ show(figure_solvable)
 
 # Discussion
 
-Provide your interpretation of the results: discuss whether the results match the theoretical predictions, whether some algorithm is better in practice than others, etc.
+The results of the tests are consistent and very accurate with these theoretical predictions. The vertex cover problem is NP-complete, meaning that there is no known algorithm that can solve it exactly in polynomial time. This implies that the difficulty of the problem grows exponentially with the size of the input.
+
+Searching for other algorithms to resolve this problem, I have found that some algorithms are better in practice than others. The backtracking algorithm is the simplest algorithm, but it is also the least efficient. Greedy algorithms and local search algorithms seems to be more efficient in practice, but they are not guaranteed to find the optimal solution.
+
+The choice of an algorithm depends on the specific application. If it is important to find the optimal solution, then a more sophisticated algorithm should be used. However, if it is more important to find a solution quickly, then a simpler algorithm may be sufficient. That means that it is important to consider the trade-off between efficiency and optimality when choosing an algorithm.
 
 \FloatBarrier
 
