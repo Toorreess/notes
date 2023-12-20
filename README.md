@@ -8,3 +8,4 @@
  - [Computer Structure](computerStructure/)
    - [First Practice](computerStructure/first_practice)
    - [Practice: PART I](computerStructure/Part_1)
+   - [Practice: PART II](computerStructure/Part_2)
