@@ -45,7 +45,16 @@ data Tree a = Leaf a
 
 -}
 
-vector = undefined
+mkTree :: Int -> a -> Tree a
+mkTree 0 x = Leaf x
+mkTree n x = Node tree tree
+  where
+    tree = mkTree (n-1) x
+
+vector :: Int -> a -> Vector a
+vector n x
+  | n < 0     = error "vector: negative exponent"
+  | otherwise = V (2^n) (mkTree n x)
 
 -- | Exercise b. size
 
@@ -58,8 +67,8 @@ vector = undefined
 1
 
 -}
-
-size = undefined
+size :: Vector a -> Int
+size (V sz _) = sz 
 
 -- | Exercise c. get
 
@@ -80,7 +89,17 @@ size = undefined
 
 -}
 
-get = undefined
+get :: Int -> Vector a -> a
+get index (V sz tree)
+  | index < 0 || index >= sz = error "get: index out of bounds"
+  | otherwise = iterator index tree
+  where
+    iterator i (Leaf x) = x
+    iterator i (Node lt rt)
+      | even i    = iterator newIndex lt
+      | otherwise = iterator newIndex rt
+      where
+        newIndex = div i 2
 
 -- | Exercise d. set
 
@@ -122,7 +141,17 @@ get = undefined
 
 -}
 
-set = undefined
+set :: Int -> a -> Vector a -> Vector a
+set i x (V sz tree)
+  | i < 0 || i >= sz = error "set: index out of bounds"
+  | otherwise       = V sz (setElem i x tree)
+  where
+    setElem _ x (Leaf _) = Leaf x
+    setElem i x (Node lt rt)
+      | even i    = Node (setElem newIndex x lt) rt
+      | otherwise = Node lt (setElem newIndex x rt)
+      where
+        newIndex = div i 2
 
 -- | Exercise e. mapVector
 
@@ -145,8 +174,11 @@ set = undefined
 13 5 23 19 5 7 9 -1
 
 -}
-
-mapVector = undefined
+mapVector :: (a -> b) -> Vector a -> Vector b
+mapVector f (V sz tree) = V sz (map' f tree)
+  where
+    map' f (Leaf x) = Leaf (f x)
+    map' f (Node lt rt) = Node (map' f lt) (map' f rt) 
 
 -- | Exercise f. intercalate
 
@@ -162,8 +194,10 @@ mapVector = undefined
 ""
 
 -}
-
-intercalate = undefined
+intercalate :: [a] -> [a] -> [a]
+intercalate _ [] = []
+intercalate [] _ = []
+intercalate (x:xs) (y:ys) = x:y:(intercalate xs ys)
 
 -- | Exercise g. toList
 
@@ -176,8 +210,11 @@ intercalate = undefined
 "function"
 
 -}
-
-toList = undefined
+toList :: Vector a -> [a]
+toList (V _ tree) = aux tree
+  where
+    aux (Leaf x) = [x]
+    aux (Node lt rt) = intercalate (aux lt) (aux rt)
 
 -- | Exercise h. Complexity
 
@@ -185,19 +222,19 @@ toList = undefined
 --
 --    operation        complexity class
 --    ---------------------------------
---    vector
+--    vector                  n
 --    ---------------------------------
---    size
+--    size                    1
 --    ---------------------------------
---    get
+--    get                   log n
 --    ---------------------------------
---    set
+--    set                   log n
 --    ---------------------------------
---    mapVector
+--    mapVector               n
 --    ---------------------------------
---    intercalate
+--    intercalate             n
 --    ---------------------------------
---    toList
+--    toList                  n²
 --    ---------------------------------
 
 
@@ -215,8 +252,13 @@ True
 False
 
 -}
+isPowerOfTwo :: Int -> Bool
+isPowerOfTwo 0 = False
 
-isPowerOfTwo = undefined
+isPowerOfTwo n
+  | n == 1 = True 
+  | even n = isPowerOfTwo (div n 2)
+  | otherwise = False
 
 -- | Exercise j. fromList
 
@@ -241,7 +283,7 @@ isPowerOfTwo = undefined
 'p' 'e' 'o' 't' 'r' 'r' 'p' 'y'
 
 -}
-
+fromList :: [a] -> Vector a
 fromList = undefined
 
 -------------------------------------------------------------------------------
