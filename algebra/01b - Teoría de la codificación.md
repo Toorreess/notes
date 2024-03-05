@@ -42,5 +42,15 @@ Para **decodificar** se debe calcular todas las distancias de $w$ a palabras del
 > 1. El código detecta errores de peso menor o igual que $k-1$.
 > 2. Es posible construir una función de decodificación $D$ que corrige los errores de transmisión de peso $\frac{k-1}{2}$.
 
+# Códigos de grupo
+### Definición
+Un esquema de codificación $(W, C, E)$ se denomia código de grupo si el conjunto $C$ es un subgrupo de $\mathbb{Z}_2^n$.
 
-`// INSERTAR EJEMPLO FOTO WHATSAPP`
+Como ejemplo de los beneficios de un código de grupo está el cálculo de la menor de las distancias entre los elementos del  código:
+
+### Teorema
+> Si $(W,C,E)$ es un código de grupo, entonces el mínimo de las distancias entre elementos de $C$ es $$\text{mín}\{w(x)\ |\ x \in C - \{0\}\}$$
+
+Otra ventaja de los códigos de grupo es que el proceso de decodificación se puede realizar más eficientemente.
+
+`TODO`
