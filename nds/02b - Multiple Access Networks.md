@@ -90,3 +90,89 @@ $$
 &\text{Max Length} = \text{Propagation speed}\ \cdot (\frac{\text{slot time}}{2})
 \end{align}
 $$
+
+
+# Token Passing Networks (FDDI)
+A control frame called **token** passed from one station to next sequentially. Each station must *wait for the token* to start transmission. Stations are physically or logically arranged in a *ring topology*.
+
+![[Pasted image 20240307090447.png]]
+
+The **Fiber Distributed Data Interface** (FDDI) consist of a second (auxiliary) ring which operates in the reverse direction compared with the main ring, but is used only if the main ring fails.
+
+# Wireless Networks (WiFi & Bluetooth)
+The **transmission media** is **radio waves**. The wireless network taxonomy can classify by:
+
+- **Use of a base station**:
+	- A infrastructure is used (base station or access point), e.g., Wifi or 3G.
+	- No infrastructure (*ad hoc*), e.g., Bluetooth or VANET.
+
+- **Hops that must be done**:
+	- *Single hop*: send a package directly.
+	- *Multiple hops*: a package is sent through nodes.
+## WiFi (IEEE 802.11)
+The **BSS** (*Basic Service Set*) is composed by stationary or mobile wireless stations, with or without an access point (base station). WiFi can use an access point (AP) or not (*ad hoc*).
+
+- The *Ad hoc mode architecture* has an independent BSS (**IBSS**).
+	- All the stations operates in a equal mode.
+	- Any station within the range of the WiFi network can join this network
+- The *Infrastructure mode architecture* is:
+	- **ESS** (Extended Service Set), made up of two or more BSS with APs.
+	- Identification of WiFi networks:
+		- **SSID**, the *public name* of the network.
+		- **BSSID** (BSS SSID), the ID of the BSS you belong to (MAC address of the AP)
+		- **ESSID** (ESS SSID), the ID of the ESS. In practice, ESSID= SSID.
+
+**ISM** (**I**ndustrial, **S**cientific & **M**edical) bands radio waves are used. The physical layer is composed commonly by two channels:
+- **2.4 GHz**: covers broader distances, compatible with many devices, but overcrowded.
+- **5 GHz**: higher BW, less interferences, but only available for short distances and not compatible for all devices.
+
+### MAC Layers
+MAC Layers are divided in two sublayers:
+
+#### The Distributed Coordination Function (DCF)
+It defines a collision avoidance (CA) mechanism, instead of a collision detection (CD) mechanism. 
+
+Collisions cannot be detected: in a AP, an antenna cannot be used for transmitting and receiving at the same time, for that is normally used 2 antenna, one for each role. 
+
+In wireless the collisions must be detected by the receiver, since the collision depends on the neighbouring stations of the receiver.
+
+*CSMA/CA*:
+- Before sending a frame it informs the receiver it wants to transmit by sending a **RTS** (*Request to Send*) frame.
+- The receiver indicates it is ready to receive data by sending a **CTS** (*Clear to Send*) frame.
+- Collision avoidance is achieved by the **NAV** (*Network Allocation Vector*) timer.
+	- Stations listening to the RTS waits for a time the sending stations needs to occupy the channel.
+- The *backoff* algorithm starts when the data is sent, to control that this arrives.
+- The station waits for a period of time to sense the medium and for transmitting the the signal if the channel is idle.
+	- **DIFS** (*Distributed InterFrame Space*), the source station. E.g. 50 $\micro$s.
+	- **SIFS** (*Short InterFrame Space*), the destination station e.g. 10 $\micro$s.
+
+It is common to fragment the data to minimize the the penalty of retransmissions.
+![[Pasted image 20240307095945.png]]
+![[Pasted image 20240307095956.png]]
+![[Pasted image 20240307100011.png]]
+
+#### The Point Coordination Function (PCF)
+The Access Point (AP) defines a centralised contention-free **polling access method**, it waits a time PIFS (*PCF InterFrame Space*) and asks an station if it has something to transmit, contention-free (**CF**) end, the other stations start their NAV (waiting). After that, it asks to the next station and so on, sequencially in a loop. The *PCF* has priority over *DCF*.
+
+### Frame Format
+![[Pasted image 20240307100902.png]]
+![[Pasted image 20240307101019.png]]
+![[Pasted image 20240307101129.png]]
+
+![[Pasted image 20240307100915.png]]
+
+### Exercise
+![[Pasted image 20240307101239.png]]
+
+## Bluetooth (IEE 802.15.1)
+The most popular technology of **WPAN**. It is designed for short-range ad hoc connections. There is two types of Bluetooth networks:
+- **Piconet**: small network, with a master (primary) station, the rest are slaves (secondary) stations.
+- **Scatternet**: a combination of piconets, where a station can be member of two piconets (the slave of one can be the master on another).
+
+The protocol architecture:
+![[Pasted image 20240307102132.png]]
+
+### Physical Layer (Radio Layer)
+It defines a 2.4-GHz ISM band divided into 79 channels of 1 MHz each. BLE communicates over 40 channels of 2 MHz.
+
+To avoid interferences, it uses the **Frequency-Hopping Spread Spectrum** (*FHSS*). Each device uses a frequency for only 625 $\micro$s before it hopes to another frequency pseudo-randomly (using a seed).
