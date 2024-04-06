@@ -1,5 +1,5 @@
 Los retículos son una estructura algebraica que se caracterizan por ser un tipo particular de conjuntos parcialmente ordenados.
-# Retículos
+# 1. Retículos
 ## Conjuntos parcialmente ordenados
 ### Definición
 Una *relación de orden parcial* $\preceq$ en un conjunto $A$ es una relación binaria que verifica las siguientes propiedades, $\forall a,b,c \in A$:
@@ -105,3 +105,104 @@ Si $A\subseteq B$ qué ocurre con
 - $A\cap B = A$
 
 Entonces, $a\leq b \iff a\square b = b$ y $a\triangle b = a$ 
+
+### Teorema
+Un retículo se puede determinar de dos maneras distintas:
+1. Un conjunto $L$ con una relación de orden $\leq$ tal que para todo par de elementos de $L$, $a$ y $b$, el conjunto $\{a, b\}$ tiene supremo e ínfimo.
+2. Un conjunto $L$ con dos operaciones internas, $\vee$ y $\wedge$, que verifican las propiedades asociativa, conmutativas, idempotentes y de absorción.
+
+## Subretículos y homomorfismos
+
+Sea $L$ un retículo. Un subretículo de $L$ es un subconjunto $K$ de $L$ que es cerrado para las operaciones $\vee$ y $\wedge$, es decir, si $a, b \in K$ entonces:
+$$a \vee b \in K \ \ \ \ \ \ \ \ \ a \wedge b \in K$$
+
+*Nota 1.* Puede ocurrir que un subconjunto $K$ de un retículo $L$ sea un retículo, pero que no sea un subretículo. Es decir, que todo conjunto $\{a, b\}$ tiene supremo en $K$, pero este supremo no es el supremo de $\{a, b\}$ en $L$.
+
+También tenemos la noción de ideal, similar a la noción de ideal en un anillo (en el que la operación $\wedge$ hace el papel del producto).
+
+### Definición
+Un **ideal** de un retículo $L$ es un subretículo $K$ que verifica $x\in L,\ a\in K \Rightarrow x\wedge a \in K$
+
+### Definición
+Sea $f: L_1 \rightarrow L_2$ una aplicación entre dos retículos. Diremos que $f$
+1. es compatible con el orden si $a\leq b \Rightarrow f(a) \leq f(b)$ 
+2. es $\vee$-homomorfismo si $f(a\vee b) = f(a) \vee f(b)$
+3. es $\wedge$-homomorfismo si $f(a\wedge b) = f(a) \wedge f(b)$
+4. Es homomorfismo de retículos si es $\vee$-homomorfismo y $\wedge$-homomorfismo.
+
+# 2. Tipos de retículos
+## 2.1 Retículos acotados
+Un *retículo* $L$ se dice *acotado* si tiene máximo y mínimo. Usualmente, el máximo se denota por $I$ y el mínimo por $O$.
+
+## 2.2 Retículos finitos
+![[Pasted image 20240318161138.png]] 
+
+### Definición 8
+Un elemento $x$ de un retículo $L$ se dice:
+1. $\vee\text{-irreducible}$ si no es el supremo de dos elementos distintos a $x$. Un elemento es $\vee\text{-irreducible}$ si solo tiene un predecesor inmediato.
+2. $\wedge\text{-irreducible}$ si no es el ínfimo de dos elementos distintos a $x$. Un elemento es $\wedge\text{-irreducible}$ si solo tiene un sucesor inmediato.
+
+Si $L$ es acotado, entonces $x$ se dice:
+1. $\text{átomo}$ si es un inmediato sucesor de $O$. Todo átomo es $\vee\text{-irreducible}$.
+2. $\text{superátomo}$ si es un inmediato predecesor de $I$. Todo superátomo es $\wedge\text{-irreducible}$.
+
+El proceso que hemos hecho en el ejemplo anterior se resume en el siguiente teorema.
+
+### Teorema 2. 
+Sea $L$ un retículo finito y $x$ un elemento de $L$. Entonces:
+1. Existe una familia de elementos $\vee\text{-irreducible}$, $x_1, \dots , x_n$ tales que $x = x_1 \vee \dots \vee x_n$
+2. Existe una familia de elementos $\wedge\text{-irreducible}$, $y_1, \dots , y_n$ tales que $y = y_1 \wedge \dots \wedge y_n$
+
+Ambas descomposiciones puede tomarse irredundantes, esto es, que verifiquen $x_i \nleq x_j,\ \forall i, j$
+
+## 2.3 Retículos complementados
+Un retículo $L$ se denomina complementado si es acotado y todo elemento tiene un complemento.
+
+## 2.4 Retículos distributivos
+Un retículo $L$ se denomina distributivo si se cumplen las propiedades distributivas, es decir,
+$$a\vee (b\wedge c) = (a\vee b) \wedge (a\vee c)\ \ \ \ \ \ \ \ \ \ \ a\wedge(b\vee c) = (a\wedge b) \vee (a\wedge c)$$
+
+![[Pasted image 20240404161511.png]]
+
+### Teorema 4
+Un retículo $L$ es distributivo si y solo si no contiene un subretículo isomorfo al diamante o al pentágono.
+
+*Nota 2.* En el retículo $D_{180}$, el subconjunto $L = \{1, 2, 4, 5, 20\}$ tiene forma de pentágono. Sin embargo, no es un subretículo de $D_{180}$.
+
+### Teorema 5
+Sea $L$ un retículo distributivo:
+1. Se cumplen las propiedades de cancelación:
+$$
+\begin{align}
+\begin{rcases}
+x\vee y = x\vee z \\
+x\wedge y = x\wedge z
+\end{rcases}
+\end{align} \Rightarrow y = z$$
+
+2. Si $x$ tiene dos complementos, $x_1$ y $x_2$, entonces $x_1 = x_2$. Por tanto, todo elemento tiene como mucho un complemento.
+
+3. La descomposición de un elemento como supremo de elementos $\vee$-irreducibles (resp. $\wedge$-irreducibles) es única.
+
+# 3. Álgebra de Boole
+Un **álgebra de Boole** es un retículo *acotado*, *distributivo* y *complementado*.
+
+Sea $A$ un álgebra de Boole. Entonces:
+1. Involución: $\bar{\bar{x}} = x$
+2. Leyes de Morgan:
+	- $\overline{a \vee b} = \bar{a} \wedge \bar{b}$ 
+	- $\overline{a\wedge b} = \bar{a}\vee\bar{b}$
+3. Si $B$ es otro álgebra de Boole y $f: A \rightarrow B$ es un isomorfismo de retículos entonces $f$ conserva los complementos, esto es, $\overline{f(a)} = f(\bar{a})$ 
+
+### Teorema 5
+Un álgebra de Boole se puede presentar de dos maneras distintas.
+1. Como un retículo $A$ complementado y distributivo.
+2. Como un conjunto $A$ dotado de dos operaciones $\vee$ y $\wedge$, dos elementos $O$ e $I$, y una aplicación $A \rightarrow A$ de la forma $a  \mapsto \bar{a}$ que verifican:
+	1. Asociativas
+	2. Distributivas
+	3. Conmutativas
+	4. Identidades: $a\wedge I = a,\ a\vee O = a$ 
+	5. Complemento: $a\wedge \bar{a} = I,\ a\vee \bar{a} = O$ 
+
+## 3.2 Teorema de estructura
+En un álgebra de Boole $B$, todo elemento irreducible es un átomo.
