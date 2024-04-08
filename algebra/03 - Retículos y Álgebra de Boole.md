@@ -202,4 +202,68 @@ Sea $A$ un álgebra de Boole. Entonces:
 	5. Complemento: $a\wedge \bar{a} = I,\ a\vee \bar{a} = O$ 
 
 ## 3.2 Teorema de estructura
-En un álgebra de Boole $B$, todo elemento irreducible es un átomo.
+**Lema.** En un álgebra de Boole $B$, todo elemento irreducible es un átomo.
+
+**TEOREMA**
+>Sea $B$ un álgebra de Boole finita y $x \in B$. Denotemos por $A_x = \{a_1, \dots , a_n\}$ al conjunto de todos los átomos menores iguales que $x$. Entonces:
+>1. $x = a_1 \vee a_2 \vee \dots \vee a_n$
+>2. Esta representación es única en el sentido de que si $\mathcal{C}$ es otro conjunto de átomos cuyo supremo es $x$, entonces $\mathcal{A}_x = \mathcal{C}$.
+
+La expresión de un elemento $x$ de un álgebra de Boole $B$ dada en el teorema anterior se denomina *Forma normal disyuntiva de x*.
+
+*Corolario*
+1. Si el álgebra de Boole $B$ tiene exactamente $n$ átomos, entonces $B$ tiene $2^n$ elementos.
+2. Para cualquier $n \in \mathbb{N}$, existe un álgebra de Boole con $2^n$ elementos.
+3. Dos álgebras de Boole son isomorfas si y solo si tienen el mismo número de átomos si y solo si tienen el mismo número de elementos.
+4. Toda álgebra de Boole con $n$ átomos es isomorfa a $B_n$ y a $\mathcal{P}(\{1, \dots, n\})$.
+5. Toda álgebra de Boole con $2^n$ elementos es isomorfa a $B_n$ y a $\mathcal{P}(\{1, \dots, n\}$.
+
+**TEOREMA**
+> Sea $B$ un álgebra de Boole finita y $x \in B$. Denotemos por $\mathcal{B}_x = {b_1,\dots, b_n}$ al conjunto de todos los superátomos mayores o iguales que $x$. Entonces:
+> 1. $x = b_1 \wedge b_2 \wedge \dots \wedge b_n$ 
+> 2. Esta representación es única en el sentido de que si $\mathcal{C}$ es otro conjunto de coátomos cuyo ínfimo es $x$, entonces $\mathcal{B}_x = \mathcal{C}$.
+
+La expresión de un elemento $x$ de un álgebra de Boole $B$ dada en el teorema anterior se denomina *Forma normal conjuntiva de x*.
+
+# 4. Funciones booleanas
+## 4.1 Funciones booleanas
+Una *función booleana* de $n$ variables es una aplicación $f: \mathbb{B}^n \rightarrow \mathbb{B}$.
+
+![[Pasted image 20240408154908.png]]
+En las funciones booleanas: 
+- $+ = \vee$: supremo
+- $\cdot = \wedge$: ínfimo
+### Ejemplo
+- Supremo: $f_2 \vee f_8 = f_{10}$
+	$CS\set{f_2, f_8} = \set{f_{15}, f_{14}, f_{11}, f_{10}}$
+- Ínfimo: $f_{10} \wedge f_4 = f_0$ 
+	$CI\set{f_{10}, f_4} = \set{f_0}$
+- Máximo: $f_{15}$
+- Mínimo: $f_0$
+
+Sea $\mathcal{F}_n$ el conjunto de las funciones booleanas de $n$ variables, queremos analizar si dicho conjunto es álgebra de Boole. Para ello, se debe dar el siguiente Teorema:
+
+**TEOREMA**
+> En el conjunto $\mathcal{F}_n$ de las funciones booleanas de $n$ variables definimos la *relación de orden*
+> $$f \leq g \iff f(x_1,\dots,x_n) \leq f(x_1,\dots,x_n)\  \forall \ (x_1,\dots,x_n) \in \mathbb{B}^n$$
+> Entonces $\mathcal{F}_n$ es un retículo complementado y distributivo y, por tanto, un álgebra de Boole. Además:
+> 1. $(f \vee g)(x_1,\dots,x_n) = f(x_1,\dots,x_n) \vee g(x_1,\dots,x_n)$.
+> 2. $(f \wedge g)(x_1,\dots,x_n) = f(x_1,\dots,x_n) \wedge g(x_1,\dots,x_n)$.
+> 3. $(\overline{f})(x_1,\dots,x_n) = \overline{f(x_1,\dots,x_n)}$.
+> 4. $f$ es un átomo si y solo si existe un elemento $x \in \mathbb{B}^n$ tal que $f(x) = 1$ y $f(y) = 0$ si $y \neq x$.
+> 5. f es un coátomo si y solo si existe un elemento $x \in \mathbb{B}^n$ tal que $f(x) = 0$ y $f(y)=1$ si $y \neq x$.
+> 6. $\mathcal{F}_n$ tiene $2^n$ átomos y $2^{2^n}$ elementos.
+
+## 4.2 Expresiones booleanas
+Se aborda el problema de si es posible expresar una función booleana mediante una fórmula.
+
+Una expresión booleana con $n$ variables, $x_1, \dots, x_n$, es una expresión que se construye del siguiente modo:
+1. Las expresiones simples son las que están formadas por una variable o por una constante $0, 1$.
+2. Si $e$ es una expresión booleana, entonces $\overline{e}$ es una expresión booleana.
+3. Si $e_1$ y $e_2$ son expresiones booleanas, entonces $e_1 + e_2$ y $e_1 \cdot e_2$ son expresiones booleanas.
+
+Dos expresiones booleanas son equivalentes si definen la misma función booleana.
+
+*Proposición*
+1. Un átomo está dado por una expresión en la que aparecen todas las variables (o los complementos de ellas) multiplicando. Es decir, son de la forma $e_1 \cdot e_2 \dots e_n$, donde $e_i$ es $xi$ o $\overline{x_i}$. Esta expresiones se llaman **minitérminos**.
+2. Un átomo está dado por una expresión en la que aparecen todas las variables (o los complementos de ellas) sumando. Es decir, son de la forma $e_1 + e_2 \dots +e_n$, donde $e_i$ es $xi$ o $\overline{x_i}$. Esta expresiones se llaman **maxitérminos**.
