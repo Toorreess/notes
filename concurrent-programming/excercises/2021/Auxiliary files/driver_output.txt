@@ -1,0 +1,27 @@
+Initializing and showing the framework:
+Framework node 0 CPU avail 5. VNFS are: 
+Framework node 1 CPU avail 5. VNFS are: 
+Framework node 2 CPU avail 5. VNFS are: 
+Framework node 3 CPU avail 5. VNFS are: 
+Framework node 4 CPU avail 5. VNFS are: 
+Inserted v1 - CPU=3
+Inserted v2 - CPU=5
+Inserted v3 - CPU=1
+Inserted v4 - CPU=2
+Not inserted v5 - CPU=6
+Inserted v6 - CPU=4
+Showing after insertions:
+Framework node 0 CPU avail 1. VNFS are: (v3, 1)	(v1, 3)	
+Framework node 1 CPU avail 0. VNFS are: (v2, 5)	
+Framework node 2 CPU avail 3. VNFS are: (v4, 2)	
+Framework node 3 CPU avail 1. VNFS are: (v6, 4)	
+Framework node 4 CPU avail 5. VNFS are: 
+Freeing the VNF v1 and showing
+Framework node 0 CPU avail 4. VNFS are: (v3, 1)	
+Framework node 1 CPU avail 0. VNFS are: (v2, 5)	
+Framework node 2 CPU avail 3. VNFS are: (v4, 2)	
+Framework node 3 CPU avail 1. VNFS are: (v6, 4)	
+Framework node 4 CPU avail 5. VNFS are: 
+VNFs stored into deployedVNFs.dat
+Destroying the framework and showing
+Framework is empty
