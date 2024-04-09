@@ -57,13 +57,13 @@ def f7(a: np.ndarray):
     if n.is_integer():
         return a.reshape(int(n), int(n))
     else:
-        return "[*] ERROR: The array passed cannot be reshaped into a square matrix"
+        return "[*] ERROR: The array passed cannot be reshaped into a square matrix."
 
 
 # * Excercise 8: Write a program that, given a bidimensional array, finds the maximum of each row
 def f8(a: np.ndarray):
     if a.ndim != 2:
-        return "[*] ERROR: The array passed must be bidimensional"
+        return "[*] ERROR: The array passed must be bidimensional."
 
     return a.max(axis=1)
 
@@ -86,33 +86,51 @@ def f10(a: np.ndarray):
     pass
 
 
-# * Excercise 11: Normalize a bidimensional array with 4 rows and 3 columns by subtracƟng the mean and dividing by the standard deviaƟon on each row.
+# * Excercise 11: Normalize a bidimensional array with 4 rows and 3 columns by subtracting the mean and dividing by the standard deviation on each row.
 def f11(a):
+    if a.shape != (4, 3):
+        return "[*] ERROR: The array passed must have 4 rows and 3 columns."
+    
+    # TODO
     pass
 
 
 # * Excercise 12: Write a program that, given a bidimensional array, finds the indices (rows and columns) of the minimum and maximum elements of the array.
 def f12(a):
+    if a.ndim != 2:
+        return "[*] ERROR: The array passed must be bidimensional."
+    
+    # TODO
     pass
 
 
 # * Excercise 13: Write a program that sorts the rows of a bidimensional array according to the values of the first column.
 def f13(a):
+    if a.ndim != 2:
+        return "[*] ERROR: The array passed must be bidimensional."
+    
+    # TODO
     pass
 
 
 # * Excercise 14: Write a program that generates a bidimensional array with 7 rows and 5 columns
-# * randomly according to the normal distribution, and then sets to zero all negaƟve elements.
-def f14(a):
+# * randomly according to the normal distribution, and then sets to zero all negative elements.
+def f14():
+    # TODO
     pass
 
 
 # * Excercise 15: Write a program that, given a unidimensional array and a positive integer k, finds the indices of the k largest values of the array.
 def f15(a):
+    if a.ndim != 1:
+        return "[*] ERROR: The array passed must be unidimensional."
+    
+    # TODO
     pass
 
 
 # * Excercise 16: Write a program that generates a bidimensional array with 6 rows and 7 columns randomly according to the uniform distribution between 0 and 1,
 # * and then sets to zero the two first columns and sets to one the three last columns.def f7(a):
 def f16():
+    #TODO
     pass
