@@ -1,4 +1,4 @@
-# Concept of Process
+# 1. Concept of Process
 ## Definition
 An isolated environment to execute a code:
 - Independent of the real HW:
@@ -13,8 +13,8 @@ An isolated environment to execute a code:
 > - Any executable program can run as if it was running alone on the processor
 > - Two instances of the same program can run simultaneously without interferences: each one will have its own and private resources.
 
-# Components of a Process
-## Memory Map of a Process
+# 2. Components of a Process
+## 2.1 Memory Map of a Process
 The process memory is assigned by the kernel to load the contents of the executable file during process creation. This is divided in several segments of different types (instructions, variables, stack). The process memory map:
 
 **Code segment (static size, RO access)**
@@ -37,7 +37,7 @@ The process memory is assigned by the kernel to load the contents of the executa
 - It grows dynamically. 
 - It has read/write access.
 
-## Execution context of a process
+## 2.2 Execution context of a process
 The execution context is the whole state of the CPU before executing a machine instruction. The result of one instruction depends on the history of changes that all the previous instructions have done to the CPU state.
 > The context of a running process is the state of the CPU itself (it changes with every instruction executed).
 
@@ -52,7 +52,7 @@ Contents of context:
 
 *Stack pointer value can't be saved on stack*
 
-## Process Resources
+## 2.3 Process Resources
 The kernel must remember the state of the resources altered by a process through system calls:
 - The process **can’t be trusted** to “remember” the state of resources to avoid **security breaches**.
 - The kernel must “remember” the state of system resources inside *protected kernel data structures*.
@@ -74,7 +74,168 @@ connect(s ,&dstaddr, len);
 write(s, buff, size);
 ```
 
-# Process Context Switching
+# 3. Process Context Switching
 (see the slides)
 
-# Process States
+# 4. Process States
+**Running:** 
+- The CPU is currently executing an instruction belonging to its code.
+- The CPU is currently executing an instruction of a system call initiated by this process.
+
+**Blocked:**
+- The process has requested an I/O operation which has not finished yet. It can’t continue until I/O ends.
+
+**Ready:**
+- The process is not being executed but the I/O requested has already finished. It can continue immediately if the CPU can be assigned by the kernel to this process.
+- The process is not being executed but any cause that forced the kernel to steal the CPU from this process is no longer valid.
+
+**Stopped:**
+- Any process that receives a SIGSTOP signal must not run even if it is not waiting. It can only continue after receiving a SIGCONT signal.
+- It can be considered a special kind of blocked process waiting for SIGCONT to arrive.
+- It was designed for text terminals but it is practical to temporally retire a process from the competition for the CPU without killing it.
+
+**Swapped out:**
+- A process that has been moved from memory to swap disk due to the virtual memory management of the kernel can receive an exception from the MMU when it detects a reference to an inexistent memory position.
+- It can’t continue executing only after it is assigned again some memory and moved again from disk to memory (swap-in).
+
+**Zombie:**
+- In POSIX, an ended process has produced an exit code which must be recovered by its parent process to check th
+- e termination status. The ended process remains in zombie state until the parent process executes the wait() syscall to get the return code.
+
+## Non preemptive scheduler
+![[Pasted image 20240420202052.png]]
+
+## Preemptive scheduler
+![[Pasted image 20240420202106.png]]
+
+## Zombie state
+![[Pasted image 20240420202132.png]]
+
+## Stopped state
+![[Pasted image 20240420202151.png]]
+
+## Swapped out
+![[Pasted image 20240420202211.png]]
+
+## UNIX Process States
+![[Pasted image 20240420202327.png]]
+
+# 5. Implementation
+## 5.1 Process Control Block (PCB)
+The kernel uses one fixed size *C struct* for each process. Kernel has a *limited number* of PCB structures (an array of PCBs). Memory allocation inside kernel is static and quick.
+
+Each PCB contains memory map, execution contexts and process properties.
+
+## 5.2 Process Queues & Lists
+Each state is a list of pointers to the PCBs of the processes in that state.
+- Some lists are sorted queues (ready).
+	- Next running process is at the head of the queue.
+	- In UNIX, the first *N* PCBs of the ready queue are running on the *n* CPU cores.
+- Some lists are set (blocked, stop, swap)
+	- Remove order does not depend on add order.
+- We need a list of free PCBs.
+
+![[Pasted image 20240420205317.png]]
+
+
+## 5.3 Linux Kernel details
+### IRQ Context saved on the stack
+- Assembler macros `PUSH_REGS`, `POP_REGS` to save/restore context at IRQ handlers.
+- **C Structure** to access CPU context saved on stack at IRQ handlers from C language.
+
+### Syscall exception handler
+- **Kernel entry** code for syscalls.
+- `do_syscall_64()`
+- **Syscall** function decoding.
+- **Numeric codes** of Linux syscalls.
+
+### Process Control Structures
+- `task_struct` (PCB)
+- `files_struct` (Open Files Information)
+
+### Sets for states
+- Implemented as trees to speed up search by pid.
+
+
+# 6. Threads
+## 6.1 Allocation & Scheduling
+![[Pasted image 20240421202437.png]]
+
+
+- **Process**: Entity that can allocate resources.
+- **Process:** Entity that can be scheduled.
+
+## 6.2 Parallelism between processes
+![[Pasted image 20240421202612.png]]
+
+It is desirable to write parallel programs to process **several operations** in **several processors** at **the same time**.
+
+Parallel programs need **shared resources**. Sharing resources between processes is complex:
+- The resources are assigned to one process.
+- Only one process *creates/owns* shared resources.
+- Other processes *request access* to shared resources through the OS.
+
+## 6.3 Parallelism inside a process
+![[Pasted image 20240421203050.png]]
+
+The goal is to have several execution contexts inside the process. We separate scheduling and resource allocation on two different *OS concepts*.
+- **Process**: Entity that can allocate resources.
+- **Thread**: Entity that can be scheduled.
+
+## 6.4 Threads inside a process
+![[Pasted image 20240421203050.png]]
+
+A process has at least one thread at start (initial thread).
+- The *first thread can create* other threads with `pthread_create()`.
+- If any thread calls `pthread_exit()` *only that thread ends*.
+- The *process ends* when the *last thread ends*.
+- If any thread calls *exit()*, the *process ends* and all threads are killed.
+
+## 6.5 Process components (updated)
+- **Memory Map of the process**
+- **N Execution contexts** (*1 per thread*)
+- **Process Properties**
+
+## 6.6 Thread and Process state (updated)
+### Thread
+- Run
+- Ready
+- Blocked
+
+### Process
+- **Run:** *At least one* thread running.
+- **Ready:** no thread running and at least one thread ready.
+- **Blocked:** all threads blocked.
+
+
+# 7. POSIX Programming
+## 7.1 Programming models
+
+### Process based
+- One initial process creates one process to process each operation.
+- Each process is independent.
+- An exception in one process kills only that process.
+
+### Thread based
+- One initial thread creates one thread to process each operation.
+- All threads are inside the same process.
+- An exception in one thread kills the process (all threads die).
+
+## 7.2 POSIX Processes
+- *Process creation*: `fork()`
+- *Executable loading*: `exec()`
+- *Process termination*: `exit()`
+- *Status collection*: `wait()`
+- *Parent/child synchronization*:
+	- `fork()/kill()/wait()`
+- *Signals*: `signal()`, `kill()`
+
+## 7.3 Fork Programming
+![[Pasted image 20240421204821.png]]
+
+## 7.4 Thread Design
+- **Dispenser:** One thread receives request and creates one worker to process it and answer.
+- **Workers:** All threads compete to receive requests, process and answer.
+- **Segmentation:** Each thread does an specific operation on the request and pass the request to the next thread.
+
+![[Pasted image 20240421205141.png]]
