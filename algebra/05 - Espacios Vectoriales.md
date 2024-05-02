@@ -142,4 +142,20 @@ Dados dos subespacios vectoriales $W_1$ y $W_2$ de un espacio vectorial $V$, se 
 
 **Propiedades**
 1. La suma de dos subespacios vectoriales es un subespacio vectorial
-2. Si $S$ es un SG de $W_1$ 
+2. Si $S$ es un SG de $W_1$ y $S'$ es un SG de $W_2$, entonces $S \cup S'$  es un SG de $W_1 + W_2$. 
+
+### 3.3.3 Suma directa
+Si $V$ es un EV y $U$ y $W$ son subespacios suyos tales que
+- $V = U + W$ 
+- $U \cap W = 0$
+decimos que $V$ es *suma directa* de $U$ y $W$: $$V = U \oplus W$$
+En tal caso, $W$ es el *complementario* de $U$.
+
+### 3.3.4 Cálculo de un complemento de $U$
+- Tomamos una base $\set{u_1, \dots,\ u_m}$ de $U$.
+- La ampliamos a una base de $V$, $\set{u_1, \dots,\ u_m, u_{m+1},\dots,\ u_n}$
+- Un complementario es $L(u_{m+1},\dots,\ u_n)$
+
+### 3.3.5 Fórmula de las dimensiones
+Dados subespacios vectoriales $U_1$ y $U_2$ de $V$, se cumple $$\dim(U_1 + U_2) = \dim(U_1) + \dim(U_2) - \dim(U_1\cap U_2)$$
+
