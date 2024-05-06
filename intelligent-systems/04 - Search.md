@@ -232,3 +232,22 @@ The solutions to problems are represented as symbol structures. **A physical sym
 
 **Solution:** *Action* sequence that leads from the *initial state* to a *goal state*.
 	- **Optimal:** : Has the lowest *path cost* among all solutions.
+
+## Where do heuristics come from?
+### Relaxed problems
+Consistent heuristics can be derived from the **exact** solution cost of a **relaxed** version of the problem. The key point is that the optimal solution cost of a relaxed problem is no greater than the optimal solution cost of the real problem.
+
+We will denote by $h^*(s)$ the minimum cost from $s$ to the goal. If $R$ is a relaxation of $P$ and $h_P(s) = h^*_R(s)$, we say that $h_P$ is a relaxation heuristic for $P$. Every relaxation heuristic is consistent
+
+## Consistent heuristics
+Is h1 consistent? **Yes**, it comes from a relaxation. You can also check it directly: 
+
+Consider a state $s$ and $h(s)$. Consider any move $(s, s')$. Its cost is $c(s, s') =1$. Consider $h(s')$: 
+- Either we have put a misplaced tile in its correct position  $h(s') = h(s) - 1$ 
+- Or we have put a well-placed tile in an incorrect position $h(s') = h(s) + 1$ 
+- Or none of the above $h(s) = h(s')$ 
+
+In every case $h(s) \leq h(s') + c(s, s')$
+
+## Are all heuristics the same?
+$h$ is more informed than $h'$ iff for every non goal node $s$, $h'(s) \leq h(s)$.
