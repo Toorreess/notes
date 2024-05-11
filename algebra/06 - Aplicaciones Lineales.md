@@ -53,4 +53,25 @@ Sean $f$ y $g$ aplicaciones lineales sobre los mismos espacios vectoriales, $a\i
 1. $M(f+g, B, B') = M(f,B,B') + M(g, B, B')$.
 2. $M(af, B, B') = aM(f,B,B')$.
 
-Si $V''$ es otro espacio vectorial, $h: V' \rightarrow V''$ una aplicación vectorial
+Si $V''$ es otro espacio vectorial, $h: V' \rightarrow V''$ una aplicación vectorial, $h: V' \rightarrow V''$ una aplicación lineal y $B''$ una base de $V''$, entonces:
+3. $M(h \circ f, B, B'') = M(h, B', B'') \cdot M(f, B,B')$
+
+### 1.2.4 Matrices de aplicaciones y matrices de cambio de base
+Sea $f: V \rightarrow V'$ una aplicación lineal, $B_1$ y $B_2$ bases de $V$, y $B'_1$ y $B'_2$ bases de $V'$. Entonces: $$M(f, B_1, B_1') = M(B'_2, B'_1) \cdot M(f,B_2,B_2') \cdot M(B_1,B_2)$$
+
+# 2. Núcleo e Imagen de una Aplicación Lineal
+## 2.1 Núcleo e imagen de una aplicación lineal
+Dada una aplicación lineal $f: V\rightarrow V'$, se define:
+1. El núcleo de $f$, $N(f)$, como: $$Ker(f) = \set{v\in V\ |\ f(v)=0}$$
+2. La imagen de $f$, $Img(f)$, como: $$Img(f)=\set{f(v)\ |\ v\in V}$$
+
+### 2.1.1 Subespacios vectoriales
+El núcleo y la imagen de una aplicación vectorial son subespacios vectoriales.
+
+1. Para calcular el núcleo, basta reducir el sistema de ecuaciones dado por la condición $f(x)=0$.
+2. Para calcular la imagen, tomamos una base $B$ de $V$. Entonces, $Im(f)$ es el subespacio generado por $f(B)$.
+
+### 2.1.2 Relación entre las dimensiones
+Sea $f: V \rightarrow V'$ una aplicación lineal. Entonces: $$\dim(V) = \dim(Ker(f)) + \dim(Img(f))$$
+# 3. Aplicaciones Lineales Inyectivas, Sobreyectivas y Biyectivas
+
