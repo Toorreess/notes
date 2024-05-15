@@ -75,26 +75,3 @@ El núcleo y la imagen de una aplicación vectorial son subespacios vectoriales.
 Sea $f: V \rightarrow V'$ una aplicación lineal. Entonces: $$\dim(V) = \dim(Ker(f)) + \dim(Img(f))$$
 # 3. Aplicaciones Lineales Inyectivas, Sobreyectivas y Biyectivas
 
-
-## Ejercicio clase
-$$\begin{align}
-&f: (\mathbb{Z}_{11}^3) \rightarrow (\mathbb{Z}_{11}^3)\\
-&f(x,y,z) = (4x+7y+8z,\ 4y+4z,\ 9x+10z) \\ \\
-&B = \set{(8,5,7),\ (1,7,8),\ (1,1,1)},\ \ M(f, B,B) = M(f,B) \\ \\ 
-&1.\\ &f(8,5,7) = (2,4,10) \\ &f(1,7,8) = (7,5,1) \\ &f(1,1,1) = (8,8,8) \\ \\
-&2. \\ 
-	&(2,4,10) = a(8,5,7) + b(1,7,8) + c(1,1,1) \Rightarrow a=3,\ b=0,\ c=0 \\
-&(7,5,1) = a(8,5,7) + b(1,7,8) + c(1,1,1) \Rightarrow a=0,\ b=7,\ c=0 \\
-&(8,8,8) = a(8,5,7) + b(1,7,8) + c(1,1,1) \Rightarrow a=0,\ b=0,\ c=8 \\ \\
-
-&Sol:\pmatrix{3 & 0 & 0 \\ 0 & 7 & 0 \\ 0 & 0 & 8}
-
-\end{align}$$
-
-## Ejercicio 7
-
-$$
-\begin{align}
-\varepsilon \text{ espacio vectorial} = \set{\begin{pmatrix}a & b+c \\ -b+c & a\end{pmatrix},\ a,b,c \in \mathbb{R}}
-\end{align}
-$$
