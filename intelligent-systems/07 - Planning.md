@@ -68,3 +68,5 @@ The action scheme consists of:
 	3. $A_i (i>0)$ is applicable to $S_{i-1}$
 	4. $S_i (i>0$) is the result of applying $A_i$ to $S_{i-1}$
 	5. $S_n$ satisfies the goal $G$.
+
+Informally, we also call *solution plan* just to the corresponding sequence of actions $A_1,\dots,A_n$
