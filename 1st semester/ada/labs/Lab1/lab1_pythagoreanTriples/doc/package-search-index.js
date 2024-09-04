@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"es.uma.ada"},{"l":"es.uma.ada.problem.algebra.diophantine"},{"l":"es.uma.ada.problem.algebra.diophantine.pythagorean"}];updateSearchResults();
