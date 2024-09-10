@@ -7,15 +7,15 @@
 ## Teoría de Dominios
 Dar contexto a la semántica de la prog. funcional, lambda-cálculo. Base matemáticas.
 
-### 1. Dcpos y dcpos punteados
-### 2. Funciones continuas
-### 3. Algunas construcciones de dcpos
-### 4. Teorema del punto fijo y aplicaciones
-### 5. Topología de Scott
-### 6. Introducción al lambda cálculo
+- [1. Dcpos y dcpos punteados](obsidian://open?vault=notes&file=T%C2%AA%20de%20Dominios%2F1.%20Dcpos%20y%20Dcpos%20Punteados)
+- [2. Funciones continuas]()
+- [3. Algunas construcciones de dcpos]()
+- [4. Teorema del punto fijo y aplicaciones]()
+- [5. Topología de Scott]()
+- [6. Introducción al lambda cálculo]()
 
 ## Semántica Denotacional
-### 1. Introducción a la semántica denotacional
+- [1. Introducción a la semántica denotacional]()
 
 # Evaluación
 1. Evaluación continua (entre 80%-100%)
