@@ -6,11 +6,11 @@ kanban-plugin: board
 
 ## BACKLOG
 
-- [ ] Hola #empotrados@{2024-09-06}
 
 
 ## TO DO
 
+- [ ] #dominios Pasar apuntes a limpio
 
 
 ## COMPLETED
