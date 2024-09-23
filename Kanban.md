@@ -10,7 +10,7 @@ kanban-plugin: board
 
 ## TO DO
 
-- [ ] #dominios Pasar apuntes a limpio
+- [x] #dominios Pasar apuntes a limpio
 
 
 ## COMPLETED
