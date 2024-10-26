@@ -74,6 +74,19 @@ func isPartialOrder(P []Elem, R []Pair) bool {
 
 func Ej1() {
 	P := []Elem{1, 2, 3}
-	R := []Pair{{1, 1}, {2, 2}, {3, 3}, {1, 2}, {2, 3}}
-	fmt.Println(isPartialOrder(P, R))
+	Rtest := [][]Pair{
+		{{1, 1}, {2, 2}, {3, 3}},
+		{{1, 1}, {2, 2}, {3, 3}, {1, 2}},
+		{{1, 1}, {2, 2}, {3, 3}, {1, 2}, {2, 3}},
+		{{1, 1}, {2, 2}, {3, 3}, {1, 2}, {2, 3}, {1, 3}},
+		{{1, 1}, {3, 3}, {1, 2}, {2, 3}, {1, 3}},
+	}
+
+	for _, R := range Rtest {
+		if isPartialOrder(P, R) {
+			fmt.Printf("%v es un orden parcial\n", R)
+		} else {
+			fmt.Printf("%v no es un orden parcial\n", R)
+		}
+	}
 }

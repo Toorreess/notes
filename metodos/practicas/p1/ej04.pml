@@ -22,6 +22,8 @@ active proctype ARRAY() {
 		:: i>=N -> break;
 	od
 	printf ("El producto es: %d\n", prod)
+	
+	// Asserts
 	assert(prod>1)
 	i = 0
 	do
