@@ -1,5 +1,7 @@
 package T1
 
+import "fmt"
+
 // Ejercicio 2
 func generateRelations(P []Elem) [][]Pair {
 	n := len(P)
@@ -32,5 +34,5 @@ func filterPartialOrder(P []Elem, RGenerated [][]Pair) [][]Pair {
 
 func E2() {
 	P := []Elem{1, 2, 3}
-	generateRelations(P)
+	fmt.Println(generateRelations(P))
 }
