@@ -2,6 +2,10 @@ package T1
 
 import "fmt"
 
+<<<<<<< HEAD
+// Ejercicio 2
+=======
+>>>>>>> 1456fac1a737b4ddc84bc87c47bb6a1533f5597c
 func generateRelations(P []Elem) [][]Pair {
 	n := len(P)
 	totalPairs := 1 << (n * n)
@@ -31,6 +35,11 @@ func filterPartialOrder(P []Elem, RGenerated [][]Pair) [][]Pair {
 	return partialOrders
 }
 
+<<<<<<< HEAD
+func E2() {
+	P := []Elem{1, 2, 3}
+	fmt.Println(generateRelations(P))
+=======
 func printRelations(R [][]Pair) {
 	for _, r := range R {
 		fmt.Println(r)
@@ -41,4 +50,5 @@ func Ej2() {
 	result := generateRelations(P)
 
 	printRelations(result)
+>>>>>>> 1456fac1a737b4ddc84bc87c47bb6a1533f5597c
 }
