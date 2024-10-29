@@ -1,0 +1,35 @@
+never property1 {    /* !([] (<> ((p[3]@critical)))) */
+T0_init:
+	do
+	:: (! (((p[3]@critical)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! (((p[3]@critical)))) -> goto accept_S4
+	od;
+}
+never p2_justicia {    /* !((! (([] (<> ((arbitro@cara)))) && ([] (<> ((arbitro@cruz)))))) || ([] (<> ((p[3]@critical))))) */
+T0_init:
+	do
+	:: (! (((p[3]@critical))) && ((arbitro@cara)) && ((arbitro@cruz))) -> goto accept_S893
+	:: (! (((p[3]@critical))) && ((arbitro@cara))) -> goto T2_S893
+	:: (! (((p[3]@critical)))) -> goto T0_S893
+	:: (1) -> goto T0_init
+	od;
+accept_S893:
+	do
+	:: (! (((p[3]@critical)))) -> goto T0_S893
+	od;
+T2_S893:
+	do
+	:: (! (((p[3]@critical))) && ((arbitro@cruz))) -> goto accept_S893
+	:: (! (((p[3]@critical)))) -> goto T2_S893
+	od;
+T0_S893:
+	do
+	:: (! (((p[3]@critical)))) -> goto T0_S893
+	:: (! (((p[3]@critical))) && ((arbitro@cara)) && ((arbitro@cruz))) -> goto accept_S893
+	:: (! (((p[3]@critical))) && ((arbitro@cara))) -> goto T2_S893
+	od;
+}

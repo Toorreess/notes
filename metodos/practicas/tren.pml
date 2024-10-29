@@ -1,8 +1,7 @@
-mtype trainStates = {far, near}
-mtype barrierStates = {up, down}
+mtype = {far, near, up, down};
 
-chan trainControlChan = [0] of {trainStates};
-chan controlBarrierChan = [0] of {controlStates}; 
+chan trainControlChan = [0] of {mtype};
+chan controlBarrierChan = [0] of {mtype}; 
 
 
 active proctype control(){
@@ -26,26 +25,26 @@ active proctype control(){
 }
 
 active proctype train(){
-	far:
+	FAR:
 	trainControlChan!near;
 		printf("Train near.\n");
-		goto near;
+		goto NEAR;
 
-	near:
+	NEAR:
 		trainControlChan!far;
 		printf("Train far.\n");
-		goto far;
+		goto FAR;
 }
 
 
 active proctype barrier(){
-	up: 
+	UP: 
 		controlBarrierChan?down;
 		printf("Barrier down.\n")
-		goto down;
+		goto DOWN;
 
-	down: 
+	DOWN: 
 		controlBarrierChan?up;
 		printf("Barrier up.\n")
-		goto up;
+		goto UP;
 }
