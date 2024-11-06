@@ -3,39 +3,57 @@ chan A_N1 = [0] of {mtype};
 chan N1_N2 = [0] of {mtype};
 chan N2_B = [0] of {mtype};
 
-active proctype A(){
-	do
-	:: A_N1!REQ ->
+proctype A(){
+	inicio:
+		A_N1!REQ;
 		if
-		:: A_N1?CNF -> skip;
+		:: A_N1?CNF; skip;
+		:: A_N1?ABO; skip;
 		fi
-	od
+
+		goto inicio;
 }
 
-active proctype N1(){
-	do
-	:: A_N1?REQ-> N1_N2!req;
-	:: N1_N2?abo -> N1_N2!req;
+proctype N1(){
+	inicio:
 		if
+		:: A_N1?REQ -> N1_N2!req;
 		:: N1_N2?rsp -> A_N1!CNF;
+		:: N1_N2?abo ->
+			if
+			:: A_N1!ABO; N1_N2!aok; goto inicio;
+			:: N1_N2!req; goto inicio;
+			fi
 		fi
-	od
+		goto inicio;
 }
 
-active proctype N2(){
-	do
-	:: N1_N2?req ->
-		if
-		:: N1_N2!abo;
-		:: N2_B!IND;
-		:: N2_B?RSP -> N1_N2!rsp;
-		fi
+proctype N2(){
+	inicio:
+	if
+	:: N1_N2?req -> {
+			if
+			:: N2_B!IND;
+			:: N1_N2!abo;
+			fi
+			goto inicio;
+		}
 	:: N2_B?RSP -> N1_N2!rsp;
-	od
+	fi
+	goto inicio;
 }
 
-active proctype B(){
+proctype B(){
 	do
 	:: N2_B?IND -> N2_B!RSP;
 	od
+}
+
+init {
+	atomic{
+		run A();
+		run N1();
+		run N2();
+		run B();
+	}
 }

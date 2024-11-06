@@ -3,10 +3,10 @@ package T2
 import "fmt"
 
 func binomialCoefficient(N, M int) int {
-	n := N
+	M = M + N - 1
 
 	result := 1
-	for i := 0; i < n; i++ {
+	for i := 0; i < N; i++ {
 		result *= (M - i)
 		result /= (i + 1)
 	}

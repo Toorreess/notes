@@ -16,9 +16,9 @@ init{
 proctype Fumador(int n){
 	inicio:
 		if
-		:: n == 0 && tabacoMesa?_ -> goto fumando;
-		:: n == 1 && papelMesa?_ -> goto fumando;
-		:: n == 2 && cerillasMesa?_ -> goto fumando;
+		:: n == 0 && tabacoMesa?1 -> goto fumando;
+		:: n == 1 && papelMesa?1 -> goto fumando;
+		:: n == 2 && cerillasMesa?1 -> goto fumando;
 		fi
 
 	fumando:
@@ -28,6 +28,7 @@ proctype Fumador(int n){
 		:: n == 0 -> tabacoMesa!0;
 		:: n == 1 -> papelMesa!0;
 		:: n == 2 -> cerillasMesa!0;
+		fi
 		goto inicio;
 }
 
@@ -47,8 +48,30 @@ proctype Agente(){
 
 proctype Mesa(){
 	short fumador;
+	inicio:
+		agenteMesa?fumador;
+
 	mesaLlena:
 		if
-		::
+		:: fumador == 0 -> tabacoMesa!1;
+		:: fumador == 1 -> papelMesa!1;
+		:: fumador == 2 -> cerillasMesa!1;
 		fi
+
+	mesaVacia:
+		if
+		:: fumador == 0 -> tabacoMesa?0;
+		:: fumador == 1 -> papelMesa?0;
+		:: fumador == 2 -> cerillasMesa?0;
+		fi
+	
+	fumador = 0;
+	agenteMesa!0;
+	goto inicio;
 }
+
+ltl p1 { []<> Mesa@mesaLlena }
+ltl p2 { []<> (Mesa@mesaVacia && (Fumador[3]@fumando ||Fumador[4]@fumando || Fumador[5]@fumando) ) }
+ltl p3 { []<> (Mesa@mesaVacia && Mesa@fumador == 2)}
+
+ltl p4 { ([]<> Agente@agenteCerilla && []<> Agente@agenteTabaco && []<> Agente@agentePapel) -> []<>(Mesa@mesaLlena && Mesa:fumador == 3)}
