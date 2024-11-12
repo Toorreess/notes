@@ -1,9 +1,7 @@
 package main
 
-import (
-	"dominios/T2"
-)
+import "dominios/T3"
 
 func main() {
-	T2.Ej2()
+	T3.Ej1()
 }
