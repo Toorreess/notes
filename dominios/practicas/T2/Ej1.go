@@ -16,6 +16,7 @@ func binomialCoefficient(N, M int) int {
 
 func Ej1() {
 	var N, M int
+
 	fmt.Print("Ingrese el valor de N: ")
 	fmt.Scan(&N)
 	fmt.Print("Ingrese el valor de M: ")
