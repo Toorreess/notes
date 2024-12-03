@@ -8,7 +8,7 @@ type Elem int
 
 type DCPO []map[Elem]Elem
 
-var x Elem = -1
+var bottom Elem = -1
 
 func CartesianProduct(DCPO1, DCPO2 []Elem) DCPO {
 	var res DCPO
@@ -23,35 +23,36 @@ func CartesianProduct(DCPO1, DCPO2 []Elem) DCPO {
 func SmashProduct(DCPO1, DCPO2 []Elem) DCPO {
 	var res DCPO
 	for _, e1 := range DCPO1 {
-		if e1 == x {
+		if e1 == bottom {
 			continue
 		}
 		for _, e2 := range DCPO2 {
-			if e2 == x {
+			if e2 == bottom {
+				continue
 			}
 			res = append(res, map[Elem]Elem{e1: e2})
 		}
 	}
-	res = append(res, map[Elem]Elem{x: x})
+	res = append(res, map[Elem]Elem{bottom: bottom})
 	return res
 }
 
 func SumaFundida(DCPO1, DCPO2 []Elem) DCPO {
 	var res DCPO
 	for _, e1 := range DCPO1 {
-		if e1 == x {
+		if e1 == bottom {
 			continue
 		}
 		res = append(res, map[Elem]Elem{e1: 0})
 	}
 
 	for _, e2 := range DCPO2 {
-		if e2 == x {
+		if e2 == bottom {
 			continue
 		}
 		res = append(res, map[Elem]Elem{e2: 1})
 	}
-	res = append(res, map[Elem]Elem{x: x})
+	res = append(res, map[Elem]Elem{bottom: bottom})
 	return res
 }
 
@@ -64,8 +65,8 @@ func PrintDCPO(DCPO DCPO) {
 }
 
 func Ej1() {
-	DCPO1 := []Elem{x, 1, 2}
-	DCPO2 := []Elem{x, 3, 4}
+	DCPO1 := []Elem{bottom, 1, 2}
+	DCPO2 := []Elem{bottom, 3, 4}
 	fmt.Print("CartesianProduct(DCPO1, DCPO2):\n")
 	PrintDCPO(CartesianProduct(DCPO1, DCPO2))
 	fmt.Print("\nSmashProduct(DCPO1, DCPO2):\n")
