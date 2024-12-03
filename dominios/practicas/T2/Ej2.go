@@ -5,27 +5,27 @@ import (
 )
 
 type Tuple struct {
-	DomainElement   string
-	CodomainElement string
+	DomainElement   int
+	CodomainElement int
 }
 
 func findMonotoneFunctionsA() [][]Tuple {
 	var functions [][]Tuple
-	elems := []string{"a", "b", "c"}
+	elems := []int{1, 2, 3}
 
-	relations := map[string][]string{
-		"a": {"a", "b", "c"},
-		"b": {"b"},
-		"c": {"c"},
+	relations := map[int][]int{
+		1: {1, 2, 3},
+		2: {2},
+		3: {3},
 	}
 
 	for _, fA := range elems {
 		for _, fB := range relations[fA] {
 			for _, fC := range relations[fA] {
 				function := []Tuple{
-					{"a", fA},
-					{"b", fB},
-					{"c", fC},
+					{1, fA},
+					{2, fB},
+					{3, fC},
 				}
 				functions = append(functions, function)
 			}
@@ -36,13 +36,20 @@ func findMonotoneFunctionsA() [][]Tuple {
 
 func findMonotoneFunctionsB() [][]Tuple {
 	var functions [][]Tuple
-	elems := []string{"a", "b", "c", "d"}
+	// elems := []string{"a", "b", "c", "d"}
+	// relations := map[string][]string{
+	// 	"a": {"a", "b", "c", "d"},
+	// 	"b": {"b", "d"},
+	// 	"c": {"c", "d"},
+	// 	"d": {"d"},
+	// }
 
-	relations := map[string][]string{
-		"a": {"a", "b", "c", "d"},
-		"b": {"b", "d"},
-		"c": {"c", "d"},
-		"d": {"d"},
+	elems := []int{1, 2, 3, 4}
+	relations := map[int][]int{
+		1: {1, 2, 3, 4},
+		2: {2, 4},
+		3: {3, 4},
+		4: {4},
 	}
 
 	for _, fA := range elems {
@@ -51,10 +58,10 @@ func findMonotoneFunctionsB() [][]Tuple {
 				for _, fD := range relations[fB] {
 					if contains(relations[fC], fD) {
 						function := []Tuple{
-							{"a", fA},
-							{"b", fB},
-							{"c", fC},
-							{"d", fD},
+							{1, fA},
+							{2, fB},
+							{3, fC},
+							{4, fD},
 						}
 						functions = append(functions, function)
 					}
@@ -65,7 +72,7 @@ func findMonotoneFunctionsB() [][]Tuple {
 	return functions
 }
 
-func contains(list []string, elem string) bool {
+func contains(list []int, elem int) bool {
 	for _, v := range list {
 		if v == elem {
 			return true
@@ -93,13 +100,11 @@ func printFunctions(functions [][]Tuple) {
 }
 
 func Ej2() {
-	fmt.Println("Diagrama apartado a):")
+	// fmt.Println("Diagrama apartado a):")
 	functionsA := findMonotoneFunctionsA()
-	fmt.Printf("Número de funciones generadas: %d\n", len(functionsA))
 	printFunctions(functionsA)
 
-	fmt.Println("Diagrama apartado b):")
+	// fmt.Println("Diagrama apartado b):")
 	functionsB := findMonotoneFunctionsB()
-	fmt.Printf("Número de funciones generadas: %d\n", len(functionsB))
 	printFunctions(functionsB)
 }
