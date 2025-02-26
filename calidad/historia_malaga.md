@@ -12,9 +12,10 @@
 - Proyecto I+D de Fujitso. Jefe: Felipe Romera, un máquina por lo visto.
 
 # 1992
-- Inauguración PTA. 3 Empresas/Edificios: Huge Microelectronicos, BIC Euronova, CT Telecom. F. Romera director general del PTA (un máquina)
+- Inauguración PTA. 3 Empresas/Edificios + 1: Huge Microelectronicos, BIC Euronova, CT Telecom.
+- F. Romera director general del PTA (un máquina)
 - Fundación Ingenia: Junta de Andalucía, Fujitso y Ayun. Málaga.
-- Expo Sevilla '92
+- Expo Sevilla '92 y Olimpiadas -> Año de mucha actividad económica en España.
 
 # 1993
 - Crisis.
@@ -23,12 +24,13 @@
 - Cambio euro
 - Y2K
 
-# 2001
-- Efecto .com
+# 1999 - 2001
+- La burbuja de las .com: Creencia de que todo negocio que estuviera en Internet triunfaría.
 
 # 2008
-- Crisis económica
+- Burbuja inmobiliaria: crisis económica debido a que se cedió muchos créditos para comprar viviendas. Muchos despidos.
 
 # 2020
 - COVID
+- Impacto menor en el sector de la informática.
 
