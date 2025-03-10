@@ -1,4 +1,4 @@
-*2025-03-04 Sandra Vázquez Pérez*
+*2025-03-04 Sandra Vázquez*
 
 *Atención, ciegos al cambio.*
 

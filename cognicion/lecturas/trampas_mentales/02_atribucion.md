@@ -1,4 +1,4 @@
-*2025-03-04, Jorge Velázquez Jiménez*
+*2025-03-04, Jorge Velázquez*
 
 *Atribución. Juzgar a los demás según su naturaleza y a sí mismos según las circunstancias*
 

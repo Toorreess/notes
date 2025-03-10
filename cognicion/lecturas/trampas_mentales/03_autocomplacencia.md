@@ -1,4 +1,4 @@
-*2025-03-04, Pablo Villarejo Pérez*
+*2025-03-04, Pablo Villarejo*
 
 *Autocomplacencia, Satisfacción por los propios actos o por la propia condición o manera de ser*
 
