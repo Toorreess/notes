@@ -94,3 +94,31 @@
 - buenos ejemplos
 - aplicaciones bien
 - falta transp. de conclusiones (lo ha contado verbalmente)
+
+*David Díaz*
+- Inicio, indice, transp bien
+- Explicaciones dar más tiempo al experimento
+- Flujo positivo, contacto visual
+- Ejemplos, conclusiones, aplicac. ISw bien
+
+*Pablo Fdez*
+- Inicio, indice bien
+- transp bien pero letras peqñas en algunas
+- Flujo positivo, contact visual bien
+- Ejemplos, aplic. ISw bien.
+- No conclusiones
+
+*Adrián Fdez.*
+- inicio, transp bien (algunas recortadas x la drch tho)
+- Explicaciones bien
+- Flujo positivo algo rápido.
+- Poco contacto visual, pero bien 
+- ejemplos, conclusiones, aplic. ISw bien
+- Final bien
+
+*Raquel Ferreira*
+- inicio, transp bien (no digas que no hay video)
+- flujo positivo, contact visual bien
+- Ejemplos, aplic. ISw bien
+- No hay conclusiones
+- final bien
