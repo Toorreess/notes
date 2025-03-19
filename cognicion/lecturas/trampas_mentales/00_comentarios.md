@@ -122,3 +122,30 @@
 - Ejemplos, aplic. ISw bien
 - No hay conclusiones
 - final bien
+
+*Alejandro garcía*
+
+*Marta Granado*
+- Inicio, indice biem
+- Transp bien
+- Explic bien, buen ejemplo
+- Flujo positivo un pelin rapido, contacto visual bien
+- Ejemplos bien, aplic ISw, conclusiones bien
+- Final bien
+
+*Jose A*
+- Inicio bien, indice poco contraste.
+- Transp bien pero letra pequeña.
+- Bien explcaciones
+- Flujo positivo bien, contact visual bien pero mejorable
+- Ejemplos bien, aplic. ISw
+- Conclusiones no hay
+
+*Anuar*
+- Inicio bien
+- Transp muy bien, adecuadas a la tematica.
+- Explicaciones bien, sin apoyo en las transparencias.
+- flujo positivo bien, contact visual bien pero mejorable
+- Ejemplos bien, conclusiones bien pero no hay transp. pa eso.
+- Aplic ISw bien, las dos negativas son más bien peligros.
+
