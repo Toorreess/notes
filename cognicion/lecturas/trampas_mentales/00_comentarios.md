@@ -149,3 +149,33 @@
 - Ejemplos bien, conclusiones bien pero no hay transp. pa eso.
 - Aplic ISw bien, las dos negativas son más bien peligros.
 
+*Antonio Moreno*
+- Inicio bien
+- Transp bien, buen tamaño letra (video no se mostró, unlucky)
+- Explicaiones bien, flujo positivo, contacto visual bien
+- Ejemplos bien, Aplic. ISw bien
+- Final bien
+
+*Antonio Ortega*
+- Inicio bien, indice
+- Transp bien, un pelín recortadas por la derecha.
+- Explicaciones, flujo positivo, conct. visual bien
+- Ejemplos bien.
+- Conclusiones bien, pero no había título.
+- Aplic. ISw bien
+- Final bien
+
+*Salvador Ortega*
+- Inicio, indice bien
+- Transp. bien, letra un poco pequeña en algunos puntos.
+- Flujo positivo bien (rapido al principio), cnt visual mejorable
+- Ejemplos bien, conclusiones bien, aplic. ISw bien
+- Final bien
+
+*Carlos Pérez*
+- Inicio bien
+- transp bien, muy bien que sean progresivas algunas. (últimas diapos, fondo oscuro con letra negra)
+- explicacoines bien, transmitía dominio del tema
+- flujo positivo bien, contacto visual bien, mucho hacia la izq.
+- ejemplos, conclusiones, aplic. ISw bien
+- Final bien
