@@ -124,6 +124,14 @@
 - final bien
 
 *Alejandro garcía*
+- Inicio bien
+- Explicaciones bien
+- Transp bien, tamaño letra en algunas al límite
+- Flujo positivo, contacto visual bien
+- Aplic. ISw bien
+- No hay conclusiones
+- Final bien
+
 
 *Marta Granado*
 - Inicio, indice biem
@@ -179,3 +187,40 @@
 - flujo positivo bien, contacto visual bien, mucho hacia la izq.
 - ejemplos, conclusiones, aplic. ISw bien
 - Final bien
+
+*Pablo Robles*
+- Inicio bien
+- Transp bien, algunas letras un pelin peques
+- Explicaciones bien, algunas transp. podian dividirse en varias
+- flujo positivo, contct visual bien aunque algo lateral
+- Ejemplos bien
+- Conclusiones bien pero sin titulo.
+- AISw bien
+- Final bien
+
+*Pablo Rocha*
+- inicio bien
+- transp bien
+- explic. bien
+- flujo positivo bien, algunas pausas de nervios pero bien
+- lenguaje no verbal mejorable
+- contacto visual bien pero mejorable
+- ejemplos, conclus., AISw bien
+- Final bien
+
+*Alba Ruiz*
+- Inicio bien
+- Transp bien (animaciones), letra peque en algunas partes (AISw)
+- Uso de pizarra bien.
+- Flujo positivo, cntc visual bien
+- ejemplos, conclus, AISw bien
+- Final bien
+
+*Jesús Santos*
+- Inicio bien
+- Transp bien
+- explic. bien
+- Necesita un poco más de soltura para saber como empezar una presentación
+- Flujo positivo bien, cntct visual bien
+- Ejemplos bien, preguntas colonoscopia mal hecha
+- Conclusiones, AISw, final bien
