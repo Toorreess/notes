@@ -224,3 +224,27 @@
 - Flujo positivo bien, cntct visual bien
 - Ejemplos bien, preguntas colonoscopia mal hecha
 - Conclusiones, AISw, final bien
+
+*Javier Tordecilla*
+- Inicio bien
+- transp bien, muy visuales. En algunas, letra un poco pequeña
+- explic. bien
+- flijo positivo bien
+- cntc visual bien, centrado a centro-derecha
+- Ejemplos bien
+- conclusiones, Ap ISw bien
+- Final bien
+
+*Yo*
+- Poner más fotos en transp.
+- mejorar ritmo flujo explicaciones y contacto visual.
+- Preparar más la presentación.
+
+*Alessia*
+- Inicio bien, indice bien
+- Transp bien
+- Muy muy rápido hablando.
+- flujo positivo bien, contacto visual bien
+- ejemplos bien
+- AISw bien
+- Conclusion, final bien
