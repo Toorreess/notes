@@ -1,5 +1,14 @@
 *2025-04-22, Guillermo Westerhof*
 # Comentarios present.
+- Inicio bien
+- Letras, diseño color, bien visualmente
+- Cntc visual, leng. no verbal bien
+- Ejemplos bien
+- Conclusiones bien
+- AISw bien
+- Opinión personal bien
+- Final bien
+- Un poco larga la presentación
 
 # Contexto libro y autor
 Isra Bravo. Copywriter (escribir textos persuasivos)
@@ -88,3 +97,6 @@ Anuncios de baile bailarín profesional vs Isra. Isra recibió más aceptación
 - impacto profesional: aplicable a cualquier negocio
 
 # Comentarios profe
+- recurrir a las emociones para convencer
+- Buscamos validación de los demás pq somos seres sociales
+- Las modas son un factor importante de ventas

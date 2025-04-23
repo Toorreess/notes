@@ -1,5 +1,15 @@
 *2025-04-22, David Díaz*
 # Comentarios present.
+- Inicio bien
+- indice bien
+- transp bien, pocas imágenes
+- Fljuo positivo, cntc visual bien, leng no vrbl algo estático
+- ejemplos bien
+- conclusiones bien
+- AISw bien
+- Op. personal bien
+- Final bien
+- Un poco larga la presentación
 
 # Contexto
 Libro divulgativo acerca de la comunicación no verbal
@@ -158,4 +168,3 @@ Concepto de posturas espejo.
 ## Conclusiones
 - Herramienta muy potente.
 
-# Comentarios profe
