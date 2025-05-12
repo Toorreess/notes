@@ -1,6 +1,12 @@
 *2025-05-06, Pablo Alonso*
 # Coment. Present
-
+- inicio, indice bien
+- transp bien, letras justillas y color con poco contraste a veces
+- flujo +, leng. corporal, cnct visual bien
+- Ejemplos bien
+- AISw bien
+- op. personal bien
+- cierre bien
 
 # Circulo vicioso de los equipos
 - Trastornos: anomalías que impiden el máximo valor del equipo
@@ -77,7 +83,4 @@
 
 # Conclusión
 Los equipos no nacen, se hacen
-
-# Coment. profe
-
 
